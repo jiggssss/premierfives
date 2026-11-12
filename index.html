@@ -111,7 +111,7 @@ select{background:var(--panel2);color:var(--fg);border:2px solid var(--line);bor
 #clock{display:block;font-family:var(--body);font-size:13px;font-weight:700;color:var(--mute);letter-spacing:.08em;margin-top:4px}
 #stage{position:relative;width:100%;max-width:1200px}
 #cv{display:block;width:100%;height:auto;aspect-ratio:1200/720;border-radius:10px;border:2px solid #0d3b20;background:#1c6f3f;outline:none}
-#b-quit{position:absolute;top:10px;right:10px;z-index:6;padding:4px 14px;font-size:13px;background:rgba(8,12,24,.7)}
+#b-quit{position:absolute;top:10px;right:10px;z-index:6;padding:8px 24px;font-size:18px;background:rgba(8,12,24,.7)}
 #legend{width:100%;max-width:1200px;display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;color:var(--mute);font-size:13px}
 #legend span{display:inline-flex;gap:6px;align-items:center}
 #overlay.under{background:none;pointer-events:none}
@@ -149,6 +149,7 @@ select{background:var(--panel2);color:var(--fg);border:2px solid var(--line);bor
   .hteam span{display:none}
 }
 @media (prefers-reduced-motion:reduce){.btn{transition:none}}
+#b-quit[hidden]{display:none}
 </style>
 <button class="btn ghost fixed" id="b-mute">♪ Music on</button>
 <section class="screen" id="s-title">
@@ -218,7 +219,7 @@ select{background:var(--panel2);color:var(--fg);border:2px solid var(--line);bor
   <div id="stage">
     <canvas id="cv" width="1200" height="720" tabindex="0"></canvas>
     <div id="overlay" hidden></div>
-    <button class="btn ghost" id="b-quit">Quit</button>
+    <button class="btn ghost" id="b-quit">Pause</button>
   </div>
   <div id="legend">
     <span><kbd>WASD</kbd> move</span><span><kbd>K</kbd> pass</span><span><kbd>L</kbd> shoot / slide</span><span><kbd>I</kbd> through</span><span><kbd>J</kbd> cross</span><span><kbd>Space</kbd> switch</span><span><kbd>P</kbd> pause</span><span><kbd>M</kbd> sound</span>
@@ -227,26 +228,29 @@ select{background:var(--panel2);color:var(--fg);border:2px solid var(--line);bor
 <script>
 window.TEAMS_A = [
  { id:"ars", name:"Arsenal", short:"ARS", kit:{"body": "#d3151f", "accent": "#ffffff", "pattern": "solid", "shorts": "#ffffff", "socks": "#d3151f", "numColor": "#ffffff"}, players:[
-  ["Raya",1,"GK",85,2,1,5,2],
-  ["Kepa",13,"GK",74,2,1,5,2],
-  ["Meslier",30,"GK",70,1,2,5,1],
-  ["Saliba",2,"DF",89,3,1,5,1],
-  ["Gabriel",6,"DF",88,4,1,2,2],
-  ["Timber",12,"DF",83,3,1,5,1],
-  ["White",4,"DF",84,1,2,5,2],
-  ["Calafiori",33,"DF",82,2,1,5,2],
-  ["Mosquera",3,"DF",78,3,1,5,1],
-  ["Rice",41,"MF",89,2,2,5,1],
-  ["Zubimendi",36,"MF",85,2,1,5,1],
-  ["Odegaard",8,"MF",88,1,4,5,1],
-  ["Merino",23,"MF",83,1,2,5,2],
-  ["Eze",10,"MF",84,4,1,2,1],
-  ["Guimaraes",39,"MF",85,3,1,5,2],
-  ["Saka",7,"FW",90,4,1,2,1],
-  ["Martinelli",11,"FW",84,3,1,5,1],
-  ["Gyokeres",14,"FW",86,2,1,5,2],
-  ["Madueke",20,"FW",80,4,1,2,1],
-  ["Havertz",29,"FW",82,1,2,5,1]
+  ["Raya",1,"GK",88,2,1,6,4],
+  ["Kepa",13,"GK",78,1,1,8,1],
+  ["Meslier",30,"GK",71,1,2,8,2],
+  ["Saliba",2,"DF",88,3,1,2,5],
+  ["Gabriel",6,"DF",89,4,1,2,5],
+  ["Timber",12,"DF",84,4,1,4,5],
+  ["White",4,"DF",81,1,2,8,5],
+  ["Calafiori",33,"DF",82,1,2,10,1],
+  ["Mosquera",3,"DF",78,5,1,2,5],
+  ["Hincapie",5,"DF",84,2,2,8,5],
+  ["Konsa",15,"DF",84,4,1,2,5],
+  ["Lewis-Skelly",49,"DF",78,4,1,4,5],
+  ["Rice",41,"MF",88,1,2,6,2],
+  ["Zubimendi",36,"MF",84,2,2,6,2],
+  ["Odegaard",8,"MF",86,1,4,6,5],
+  ["Merino",23,"MF",83,2,1,6,2],
+  ["Eze",10,"MF",84,4,1,7,1],
+  ["Guimaraes",39,"MF",86,2,1,2,2],
+  ["Saka",7,"FW",87,5,1,3,5],
+  ["Gyokeres",14,"FW",83,1,3,8,1],
+  ["Tzolis",17,"FW",82,1,2,8,1],
+  ["Madueke",20,"FW",80,5,1,3,5],
+  ["Havertz",29,"FW",81,1,2,5,2]
  ] },
  { id:"avl", name:"Aston Villa", short:"AVL", kit:{"body": "#7a1f3d", "accent": "#95bfe5", "pattern": "solid", "shorts": "#95bfe5", "socks": "#95bfe5", "numColor": "#ffffff", "collar": "#95bfe5"}, players:[
   ["Suzuki",1,"GK",79,2,1,5,1],
@@ -257,7 +261,7 @@ window.TEAMS_A = [
   ["Mings",5,"DF",77,4,1,2,4],
   ["Pau Torres",14,"DF",81,2,1,5,2],
   ["Maatsen",22,"DF",78,4,1,2,1],
-  ["Wan-Bissaka",29,"DF",79,4,1,2,1],
+  ["Wan-Bissaka",29,"DF",79,4,1,7,1],
   ["McGinn",7,"MF",82,1,3,5,4],
   ["Kamara",8,"MF",83,4,1,2,1],
   ["Buendia",10,"MF",77,3,1,5,2],
@@ -383,34 +387,34 @@ window.TEAMS_B = [
   ["Cherif",49,"FW",73,5,1,2,1]
  ] },
  { id:"cry", name:"Crystal Palace", short:"CRY", kit:{"body": "#ffffff", "accent": "#1b458f", "pattern": "sash2", "shorts": "#ffffff", "socks": "#ffffff", "numColor": "#132257", "accent2": "#c4122e", "collar": "#ffffff"}, players:[
-  ["Henderson", 1, "GK", 82, 1, 3, 2, 1],
-  ["Matthews", 31, "GK", 69, 2, 2, 2, 4],
-  ["Benítez", 44, "GK", 77, 3, 1, 2, 4],
-  ["Mitchell", 3, "DF", 82, 5, 1, 2, 1],
-  ["Riad", 4, "DF", 78, 3, 1, 5, 5],
+  ["Henderson", 1, "GK", 82, 1, 3, 8, 1],
+  ["Matthews", 31, "GK", 63, 2, 2, 8, 4],
+  ["Benítez", 44, "GK", 78, 3, 1, 2, 4],
+  ["Mitchell", 3, "DF", 79, 5, 1, 2, 1],
+  ["Riad", 4, "DF", 77, 3, 1, 5, 5],
   ["Disasi", 5, "DF", 77, 5, 1, 4, 5],
-  ["Canvot", 6, "DF", 79, 5, 1, 3, 1],
-  ["Tomiyasu", 17, "DF", 76, 2, 1, 5, 1],
-  ["Ahanor", 21, "DF", 75, 4, 1, 4, 1],
+  ["Canvot", 6, "DF", 76, 5, 1, 3, 1],
+  ["Tomiyasu", 17, "DF", 76, 2, 1, 8, 1],
+  ["Ahanor", 21, "DF", 74, 4, 1, 4, 1],
   ["Khalaili", 25, "DF", 78, 3, 1, 2, 5],
-  ["Richards", 26, "DF", 81, 4, 2, 3, 5],
-  ["Mingueza", 30, "DF", 78, 2, 3, 2, 4],
-  ["Chilwell", 33, "DF", 76, 1, 3, 5, 2],
-  ["Sarr", 7, "MF", 84, 5, 1, 4, 5],
-  ["Lerma", 8, "MF", 76, 5, 1, 4, 4],
-  ["Pino", 10, "MF", 81, 2, 1, 5, 5],
-  ["McNeil", 11, "MF", 76, 2, 1, 5, 1],
+  ["Richards", 26, "DF", 80, 4, 2, 3, 5],
+  ["Mingueza", 30, "DF", 80, 2, 3, 6, 4],
+  ["Chilwell", 33, "DF", 77, 1, 3, 6, 2],
+  ["Sarr", 7, "MF", 81, 5, 1, 4, 5],
+  ["Lerma", 8, "MF", 76, 5, 1, 2, 4],
+  ["Pino", 10, "MF", 79, 2, 1, 5, 5],
+  ["McNeil", 11, "MF", 76, 2, 1, 8, 1],
   ["Gozo", 12, "MF", 73, 3, 2, 4, 1],
-  ["Kamada", 18, "MF", 80, 2, 2, 5, 1],
-  ["Hughes", 19, "MF", 76, 1, 5, 2, 4],
-  ["Wharton", 20, "MF", 83, 1, 4, 2, 2],
+  ["Kamada", 18, "MF", 79, 2, 2, 5, 1],
+  ["Hughes", 19, "MF", 77, 1, 5, 2, 4],
+  ["Wharton", 20, "MF", 82, 1, 4, 2, 2],
   ["Timber", 23, "MF", 79, 4, 1, 3, 4],
-  ["Osorio", 24, "MF", 77, 3, 1, 5, 1],
-  ["Doucouré", 28, "MF", 75, 5, 1, 2, 4],
-  ["Guessand", 29, "MF", 77, 5, 1, 3, 4],
-  ["Nketiah", 9, "FW", 77, 5, 1, 4, 1],
+  ["Osorio", 24, "MF", 74, 3, 1, 5, 1],
+  ["Doucouré", 28, "MF", 76, 5, 1, 2, 5],
+  ["Guessand", 29, "MF", 78, 5, 1, 7, 4],
+  ["Nketiah", 9, "FW", 75, 5, 1, 2, 5],
   ["Mateta", 14, "FW", 81, 5, 1, 1, 4],
-  ["Strand Larsen", 22, "FW", 79, 1, 2, 5, 1]
+  ["Strand Larsen", 22, "FW", 77, 1, 2, 6, 1]
  ] },
  { id:"eve", name:"Everton", short:"EVE", kit:{"body": "#003399", "accent": "#ffffff", "pattern": "solid", "shorts": "#ffffff", "socks": "#003399", "numColor": "#ffffff"}, players:[
   ["Pickford",1,"GK",82,1,2,5,2],
@@ -447,7 +451,7 @@ window.TEAMS_B = [
   ["Reed",6,"MF",76,1,2,5,1],
   ["Palacios",8,"MF",77,3,1,5,1],
   ["Berge",16,"MF",80,1,4,5,2],
-  ["Iwobi",17,"MF",79,5,1,2,1],
+  ["Iwobi",17,"MF",79,5,1,7,1],
   ["Charles",19,"MF",73,4,1,2,1],
   ["Bobb",14,"MF",77,4,1,2,1],
   ["Garcia",7,"FW",80,3,1,5,2],
@@ -525,26 +529,31 @@ window.TEAMS_C = [
   ["Gnonto",29,"FW",75,4,1,2,1]
  ] },
  { id:"liv", name:"Liverpool", short:"LIV", kit:{"body": "#c8102e", "accent": "#ffffff", "pattern": "solid", "shorts": "#c8102e", "socks": "#c8102e", "numColor": "#ffffff"}, players:[
-  ["Alisson",1,"GK",87,2,1,5,4],
-  ["Mamardashvili",25,"GK",83,2,1,5,2],
-  ["Woodman",28,"GK",66,1,2,5,1],
-  ["Van Dijk",4,"DF",87,4,1,2,2],
-  ["Jacquet",5,"DF",80,3,1,5,1],
-  ["Kerkez",6,"DF",79,1,2,5,1],
-  ["Bradley",12,"DF",81,1,2,5,1],
-  ["Frimpong",30,"DF",82,4,4,2,1],
-  ["Araujo",33,"DF",84,3,1,5,2],
-  ["Wirtz",7,"MF",86,1,2,5,1],
-  ["Szoboszlai",8,"MF",85,1,2,5,1],
-  ["Mac Allister",10,"MF",85,2,2,5,1],
-  ["Gravenberch",38,"MF",85,4,1,2,1],
-  ["Endo",3,"MF",76,2,1,5,1],
-  ["Nyoni",42,"MF",70,4,1,2,1],
-  ["Isak",9,"FW",86,4,1,2,1],
-  ["Ekitike",22,"FW",84,3,1,5,1],
-  ["Gakpo",18,"FW",83,3,1,5,1],
-  ["Barcola",29,"FW",84,3,1,5,2],
-  ["Munoz",23,"FW",77,2,1,5,1]
+  ["Alisson",1,"GK",87,2,2,10,4],
+  ["Mamardashvili",25,"GK",83,3,1,8,4],
+  ["Woodman",28,"GK",71,1,3,8,2],
+  ["Van Dijk",4,"DF",88,3,1,6,5],
+  ["Gomez",2,"DF",79,4,1,4,4],
+  ["Jacquet",5,"DF",77,4,2,7,5],
+  ["Kerkez",6,"DF",81,1,2,6,5],
+  ["Bradley",12,"DF",79,1,2,5,2],
+  ["Leoni",15,"DF",71,1,2,5,1],
+  ["Tsimikas",21,"DF",76,2,2,6,5],
+  ["Frimpong",30,"DF",81,5,1,7,5],
+  ["Araujo",33,"DF",80,3,1,2,5],
+  ["Endo",3,"MF",78,2,1,5,1],
+  ["Wirtz",7,"MF",86,1,2,5,5],
+  ["Szoboszlai",8,"MF",86,2,2,10,4],
+  ["Mac Allister",10,"MF",84,2,3,2,2],
+  ["Gravenberch",38,"MF",85,4,1,2,5],
+  ["Nyoni",42,"MF",67,5,1,4,1],
+  ["Isak",9,"FW",86,4,1,2,5],
+  ["Chiesa",14,"FW",80,2,2,8,1],
+  ["Gakpo",18,"FW",82,4,1,2,4],
+  ["Ekitike",22,"FW",85,3,4,4,5,1],
+  ["Munoz",23,"FW",79,1,3,5,1],
+  ["Barcola",29,"FW",85,3,3,7,5,1],
+  ["Ngumoha",73,"FW",75,4,1,3,1]
  ] },
  { id:"mci", name:"Manchester City", short:"MCI", kit:{"body": "#6cabdd", "accent": "#1c2c5b", "pattern": "solid", "shorts": "#ffffff", "socks": "#6cabdd", "numColor": "#1c2c5b", "collar": "#ffffff"}, players:[
   ["Donnarumma",1,"GK",87,2,1,5,2],
@@ -564,8 +573,8 @@ window.TEAMS_C = [
   ["Foden",47,"MF",85,1,4,5,1],
   ["Marmoush",7,"FW",82,3,1,5,2],
   ["Haaland",9,"FW",92,1,4,5,1],
-  ["Doku",11,"FW",83,4,1,2,1],
-  ["Semenyo",42,"FW",85,4,1,2,2],
+  ["Doku",11,"FW",83,4,1,7,1],
+  ["Semenyo",42,"FW",85,4,1,7,2],
   ["Monga",40,"FW",70,4,1,2,1]
  ] },
 ];
@@ -683,7 +692,7 @@ window.TEAMS_D = [
 ];
 /* ===== CORE: data prep, formations, sprites ===== */
 const HAIR_COLS = ['#1c1613', '#4a2f1d', '#7a5130', '#a98a52', '#e0c36a', '#8a8a8a', '#e6e6e6'];
-const HAIR_TYPES = ['bald', 'buzz', 'cornrows', 'afro', 'medium', 'slick', 'balding'];
+const HAIR_TYPES = ['bald', 'buzz', 'cornrows', 'afro', 'medium', 'slick', 'dreads', 'combover', 'balding', 'longslick'];
 const FACIALS = ['', 'st', 'mu', 'bd', 'gt'];
 const SKIN = ['#f7d9c4', '#e9bb92', '#c68a58', '#8a5632', '#523020'];
 const POSIDX = { GK: 0, DF: 1, MF: 2, FW: 3 };
@@ -694,7 +703,7 @@ const TEAMS = [].concat(window.TEAMS_A, window.TEAMS_B, window.TEAMS_C, window.T
   .sort((a, b) => a.name.localeCompare(b.name));
 TEAMS.forEach(t => {
   t.players = t.players.map(p => {
-    const o = { name: p[0], num: p[1], pos: p[2], ovr: p[3], skin: p[4], hair: HAIR_COLS[p[5] - 1] || HAIR_COLS[0], style: HAIR_TYPES[p[6] - 1] || 'bald', facial: FACIALS[p[7] - 1] || '', team: t.id };
+    const o = { name: p[0], num: p[1], pos: p[2], ovr: p[3], skin: p[4], hair: HAIR_COLS[p[5] - 1] || HAIR_COLS[0], style: HAIR_TYPES[p[6] - 1] || 'bald', facial: FACIALS[p[7] - 1] || '', beard: p[8] ? HAIR_COLS[p[8] - 1] : undefined, team: t.id };
     o.id = t.id + o.num;
     const e = 76 + (o.ovr - 76) * 0.72;
     o.speed = (172 + (e - 60) * 1.3 + (o.pos === 'FW' ? 8 : o.pos === 'DF' ? -4 : 0)) * 0.84;
@@ -853,6 +862,7 @@ function paintPattern(g, kit, x, y, w, h) {
   }
 }
 
+let HAIR_SKIN = null;
 function drawHair(g, cx, cy, r, style, col, front) {
   g.fillStyle = col;
   switch (style) {
@@ -863,8 +873,7 @@ function drawHair(g, cx, cy, r, style, col, front) {
       if (front) { g.beginPath(); g.arc(cx, cy, r + 1.5, Math.PI * 1.02, Math.PI * 1.98); g.lineTo(cx + r * 0.9, cy - r * 0.2); g.quadraticCurveTo(cx, cy - r * 0.75, cx - r * 0.9, cy - r * 0.2); g.closePath(); g.fill(); }
       break;
     case 'slick':
-      if (!front) { g.fillRect(cx - r - 0.5, cy - r * 0.5, r * 2 + 1, r * 1.25); }
-      else {
+      if (front) {
         // swept-back pompadour: tall volume on top, clean high hairline, short tapered sides
         g.beginPath(); g.moveTo(cx - r - 0.8, cy + r * 0.1); g.lineTo(cx - r - 1.2, cy - r * 0.35);
         g.bezierCurveTo(cx - r - 2, cy - r * 1.2, cx + r * 0.3, cy - r * 1.4, cx + r + 1.2, cy - r * 0.55);
@@ -895,19 +904,18 @@ function drawHair(g, cx, cy, r, style, col, front) {
     case 'cornrows':
       if (front) {
         const R = r + 0.8, rgb = lum(col);
-        const gr = g.createLinearGradient(0, cy - r * 0.8, 0, cy - r * 0.26);
-        gr.addColorStop(0, col); gr.addColorStop(0.5, col); gr.addColorStop(1, 'rgba(' + rgb.join(',') + ',0)');
-        g.fillStyle = gr;
-        g.beginPath(); g.arc(cx, cy, R, Math.PI * 1.03, Math.PI * 1.97); g.lineTo(cx + r * 0.9, cy - r * 0.05); g.quadraticCurveTo(cx, cy - r * 0.5, cx - r * 0.9, cy - r * 0.05); g.closePath(); g.fill();
+        g.fillStyle = col;
+        g.beginPath(); g.arc(cx, cy, R, Math.PI * 1.03, Math.PI * 1.97); g.lineTo(cx + R, cy - r * 0.4); g.lineTo(cx - R, cy - r * 0.4); g.closePath(); g.fill();
         g.save(); g.clip();
         g.lineCap = 'round';
         for (let i = -3; i <= 3; i++) {
           const x0 = cx + i * r * 0.26, x1 = cx + i * r * 0.15;
-          const y0 = cy - r * 0.55 - Math.abs(i) * 0.2, y1 = cy - Math.sqrt(Math.max(1, R * R - (x1 - cx) * (x1 - cx))) - 1;
+          const y0 = cy - r * 0.66 - Math.abs(i) * 0.2, y1 = cy - Math.sqrt(Math.max(1, R * R - (x1 - cx) * (x1 - cx))) - 1;
           const mx = (x0 + x1) / 2 + i * 0.6, my = (y0 + y1) / 2;
           for (let k = 0; k < 2; k++) {
-            g.strokeStyle = k ? 'rgba(255,255,255,0.28)' : 'rgba(0,0,0,0.5)'; g.lineWidth = k ? 0.8 : 1.1;
-            g.beginPath(); g.moveTo(x0 + k, y0); g.quadraticCurveTo(mx + k, my, x1 + k, y1); g.stroke();
+            if (k) continue;
+            g.strokeStyle = HAIR_SKIN || 'rgba(0,0,0,0.5)'; g.lineWidth = 1.1;
+            g.beginPath(); g.moveTo(x0, y0); g.quadraticCurveTo(mx, my, x1, y1); g.stroke();
           }
         }
         g.restore();
@@ -924,6 +932,38 @@ function drawHair(g, cx, cy, r, style, col, front) {
     case 'braids':
       if (!front) { for (let i = -3; i <= 3; i++) g.fillRect(cx + i * (r * 0.3) - 1.2, cy - r * 0.2, 2.6, r * 2.2); }
       else { g.beginPath(); g.arc(cx, cy, r + 1, Math.PI * 1.02, Math.PI * 1.98); g.lineTo(cx + r * 0.9, cy - r * 0.25); g.quadraticCurveTo(cx, cy - r * 0.7, cx - r * 0.9, cy - r * 0.25); g.closePath(); g.fill(); }
+      break;
+    case 'dreads': {
+      const dk = 'rgba(0,0,0,0.32)', n = 9;
+      if (!front) { // locks falling behind the head
+        for (let i = 0; i < n; i++) { const u = i / (n - 1) - 0.5, x0 = cx + u * (r * 2.0), x1 = cx + u * (r * 2.5);
+          g.strokeStyle = col; g.lineCap = 'round'; g.lineWidth = 3.1; g.beginPath(); g.moveTo(x0, cy - r * 0.4); g.quadraticCurveTo(x0 + u * 2, cy + r * 0.4, x1, cy + r * 0.8 + (i % 2) * 1.6); g.stroke();
+          g.strokeStyle = dk; g.lineWidth = 0.8; for (let k = 1; k < 4; k++) { const yy = cy + r * (0.02 + k * 0.2); g.beginPath(); g.moveTo(x1 - 1.4 + (x0 - x1) * (1 - k / 4), yy); g.lineTo(x1 + 1.4 + (x0 - x1) * (1 - k / 4), yy + 0.5); g.stroke(); } }
+      } else {
+        g.beginPath(); g.arc(cx, cy - r * 0.15, r * 1.12, Math.PI * 0.96, Math.PI * 2.04); g.lineTo(cx + r * 0.9, cy - r * 0.3); g.quadraticCurveTo(cx, cy - r * 0.72, cx - r * 0.9, cy - r * 0.3); g.closePath(); g.fill();
+        g.strokeStyle = dk; g.lineWidth = 0.8; g.lineCap = 'round';
+        for (let i = -3; i <= 3; i++) { g.beginPath(); g.moveTo(cx + i * r * 0.25, cy - r * 0.62); g.lineTo(cx + i * r * 0.34, cy - r * (1.12 - Math.abs(i) * 0.14)); g.stroke(); }
+        for (const s of [-1, 1]) for (let j = 0; j < 2; j++) { // a couple of locks framing the face
+          const x0 = cx + s * (r * 1.02 + j * 1.8); g.strokeStyle = col; g.lineWidth = 2.9; g.beginPath(); g.moveTo(x0, cy - r * 0.35); g.quadraticCurveTo(x0 + s * 1.2, cy + r * 0.4, x0 + s * 1.4, cy + r * 0.5 + j * 1); g.stroke(); }
+      }
+      break;
+    }
+    case 'combover':
+      if (front) {
+        g.beginPath(); g.moveTo(cx - r - 0.8, cy + r * 0.05); g.lineTo(cx - r - 1, cy - r * 0.3);
+        g.bezierCurveTo(cx - r - 1.5, cy - r * 1.15, cx + r * 0.6, cy - r * 1.3, cx + r + 1.2, cy - r * 0.5);
+        g.lineTo(cx + r + 0.8, cy + r * 0.05); g.lineTo(cx + r * 0.8, cy - r * 0.12); g.lineTo(cx + r * 0.7, cy - r * 0.42);
+        g.quadraticCurveTo(cx + r * 0.1, cy - r * 0.7, cx - r * 0.25, cy - r * 0.5); g.lineTo(cx - r * 0.74, cy - r * 0.12); g.closePath(); g.fill();
+        g.save(); g.clip(); g.lineCap = 'round'; g.strokeStyle = 'rgba(0,0,0,0.3)'; g.lineWidth = 0.9; // side part, strands swept across
+        g.beginPath(); g.moveTo(cx - r * 0.55, cy - r * 0.55); g.lineTo(cx - r * 0.5, cy - r * 1.2); g.stroke();
+        g.strokeStyle = 'rgba(255,255,255,0.1)'; for (let i = 0; i < 4; i++) { g.beginPath(); g.moveTo(cx - r * 0.45 + i * r * 0.05, cy - r * 1.05 + i * 1.6); g.quadraticCurveTo(cx + r * 0.3, cy - r * 1.18 + i * 1.8, cx + r * 0.95, cy - r * 0.55 + i * 1.2); g.stroke(); }
+        g.restore();
+      }
+      break;
+    case 'longslick':
+      if (!front) { g.beginPath(); g.moveTo(cx - r - 1.2, cy - r * 0.5); g.lineTo(cx + r + 1.2, cy - r * 0.5); g.lineTo(cx + r + 1.8, cy + r * 0.95); g.quadraticCurveTo(cx, cy + r * 1.25, cx - r - 1.8, cy + r * 0.95); g.closePath(); g.fill();
+        g.strokeStyle = 'rgba(0,0,0,0.22)'; g.lineWidth = 0.8; for (let i = -2; i <= 2; i++) { g.beginPath(); g.moveTo(cx + i * r * 0.4, cy + r * 0.2); g.lineTo(cx + i * r * 0.46, cy + r * 1.05); g.stroke(); } }
+      else drawHair(g, cx, cy, r, 'slick', col, true);
       break;
     case 'balding':
       if (!front) { g.fillRect(cx - r - 1.5, cy - r * 0.35, r * 2 + 3, r * 0.5); }
@@ -979,23 +1019,32 @@ function drawPlayer(g, x, y, o) {
       g.strokeStyle = skin; g.beginPath(); g.moveTo(side * 9.5, -27); g.lineTo(-side * 9, -33); g.stroke();
       return;
     }
+    else if (mode === 7 && side === (o.pt > 0 ? 1 : -1)) { // arm jabbed back over the shoulder: elbow out, forearm up, fist by the shoulder
+      const j = o.pj || 0, ex = side * (17 + j * 6), ey = -35, fx2 = side * (14 + j * 10), fy2 = -47;
+      g.lineCap = 'butt'; g.lineWidth = 5;
+      g.strokeStyle = skin; g.beginPath(); g.moveTo(sx, sy); g.lineTo(ex, ey); g.lineTo(fx2, fy2); g.stroke();
+      if (!o.bare) { g.strokeStyle = kit.sleeve || kit.body; g.beginPath(); g.moveTo(sx, sy); g.lineTo(sx + (ex - sx) * 0.75, sy + (ey - sy) * 0.75); g.stroke(); }
+      g.fillStyle = skin; g.beginPath(); g.arc(fx2, fy2 - 1, 3, 0, 7); g.fill();
+      return;
+    }
     else if (mode === 3) { hx2 = side * 32; hy2 = -42; }
     else if (mode === 4 && side === (o.pt > 0 ? 1 : -1)) { hx2 = side * 36; hy2 = -41; }
     else { hx2 = side * 13.5 - side * Math.abs(sn); hy2 = -24 + sn * 4; }
     const L = Math.hypot(hx2 - sx, hy2 - sy), k = Math.min(1, 7 / L);
     g.lineWidth = 5; g.lineCap = 'butt';
     g.strokeStyle = skin; g.beginPath(); g.moveTo(sx, sy); g.lineTo(hx2, hy2); g.stroke();
-    g.strokeStyle = kit.sleeve || kit.body; g.beginPath(); g.moveTo(sx, sy); g.lineTo(sx + (hx2 - sx) * k, sy + (hy2 - sy) * k); g.stroke();
-    cuff(sx, sy, sx + (hx2 - sx) * k, sy + (hy2 - sy) * k, 0);
+    if (!o.bare) { g.strokeStyle = kit.sleeve || kit.body; g.beginPath(); g.moveTo(sx, sy); g.lineTo(sx + (hx2 - sx) * k, sy + (hy2 - sy) * k); g.stroke();
+    cuff(sx, sy, sx + (hx2 - sx) * k, sy + (hy2 - sy) * k, 0); }
   };
   const am = o.arms || 0;
   // torso
-  g.save(); jerseyPath(g, -10, -39, 20, 21); g.clip(); paintPattern(g, kit, -10, -39, 20, 21);
+  g.save(); jerseyPath(g, -10, -39, 20, 21); g.clip();
+  if (o.bare) { g.fillStyle = skin; g.fillRect(-12, -41, 24, 25); g.fillStyle = 'rgba(0,0,0,0.09)'; g.fillRect(-0.5, -36, 1, 12); g.fillRect(-6, -28, 5, 1); g.fillRect(1, -28, 5, 1); } else paintPattern(g, kit, -10, -39, 20, 21);
   g.restore();
-  g.fillStyle = kit.collar || kit.accent; g.fillRect(-4, -39, 8, 2.2); // collar
+  if (!o.bare) { g.fillStyle = kit.collar || kit.accent; g.fillRect(-4, -39, 8, 2.2); } // collar
   arm(-1, am); arm(1, am);
   // number
-  if (o.num != null) {
+  if (o.num != null && !o.bare) {
     g.font = "16px 'PLNums', 'Arial Narrow', sans-serif"; g.textAlign = 'center'; g.textBaseline = 'middle';
     const t = String(o.num);
     if (kit.pattern !== 'solid') { g.fillStyle = kit.body; const tw = g.measureText(t).width + 3; g.globalAlpha = 0.0; g.fillRect(-tw / 2, -33, tw, 12); g.globalAlpha = 1; }
@@ -1005,7 +1054,10 @@ function drawPlayer(g, x, y, o) {
   }
   // head
   const hx = (o.face || 0) * 1.2, hy = -47, hr = 10;
-  drawHair(g, hx, hy, hr, o.style, o.hair, false);
+  const mixC = (h, k) => { const n = parseInt(h.slice(1), 16); const f = v => Math.round(v * k); return 'rgb(' + f(n >> 16) + ',' + f((n >> 8) & 255) + ',' + f(n & 255) + ')'; };
+  HAIR_SKIN = skin;
+  const lsBeard = o.style === 'longslick' && o.facial === 'bd';
+  drawHair(g, hx, hy, hr, o.style, lsBeard ? mixC(o.hair, 0.62) : o.hair, false);
   g.fillStyle = skin; g.beginPath(); g.arc(hx, hy, hr, 0, 7); g.fill();
   g.fillStyle = skin; g.beginPath(); g.arc(hx - hr, hy + 1, 2.2, 0, 7); g.arc(hx + hr, hy + 1, 2.2, 0, 7); g.fill();
   // facial hair
@@ -1014,6 +1066,9 @@ function drawPlayer(g, x, y, o) {
     g.fillStyle = fc; g.beginPath(); g.arc(hx, hy, hr, 0.1 * Math.PI, 0.9 * Math.PI); g.quadraticCurveTo(hx, hy + 4.6, hx + hr * 0.95, hy + 3.4); g.fill();
     g.beginPath(); g.arc(hx, hy + 0.4, hr - 0.6, 0.1 * Math.PI, 0.9 * Math.PI); g.lineTo(hx - hr + 2.5, hy + 3.8); g.quadraticCurveTo(hx, hy + 3, hx + hr - 2.5, hy + 3.8); g.closePath(); g.fill();
     g.fillStyle = skin; g.fillRect(hx - 2.8, hy + 4.6, 5.6, 1.4);
+    if (lsBeard) { // separate beard from long back hair: dark jaw outline + light skin gap at the cheeks
+      g.strokeStyle = 'rgba(0,0,0,0.35)'; g.lineWidth = 0.9; g.beginPath(); g.arc(hx, hy, hr + 0.3, 0.1 * Math.PI, 0.9 * Math.PI); g.stroke();
+    }
   } else if (o.facial === 'st') {
     g.fillStyle = fc; g.globalAlpha = 0.5; g.beginPath(); g.arc(hx, hy, hr - 0.3, 0.1 * Math.PI, 0.9 * Math.PI); g.lineTo(hx - hr + 3, hy + 3); g.quadraticCurveTo(hx, hy + 5, hx + hr - 3, hy + 3); g.closePath(); g.fill(); g.globalAlpha = 1;
   } else if (o.facial === 'gt') {
@@ -1113,9 +1168,10 @@ class Match {
   foes(p) { return this.players.filter(q => q.side !== p.side); }
   basePos(p) {
     const P = PITCH, len = P.R - P.L, wid = P.B - P.T;
-    if (p.role === 'G') return { x: p.side === 'home' ? P.L + 28 : P.R - 28, y: P.CY };
-    const x = p.side === 'home' ? P.L + p.fd * len : P.R - p.fd * len;
-    const y = p.side === 'home' ? P.T + p.fw * wid : P.T + (1 - p.fw) * wid;
+    const rt = this.dir[p.side] > 0; // attacking right: defends the left goal
+    if (p.role === 'G') return { x: rt ? P.L + 28 : P.R - 28, y: P.CY };
+    const x = rt ? P.L + p.fd * len : P.R - p.fd * len;
+    const y = rt ? P.T + p.fw * wid : P.T + (1 - p.fw) * wid;
     return { x, y };
   }
   setCtrl(p) {
@@ -1126,7 +1182,7 @@ class Match {
     const P = PITCH;
     this.players.forEach(p => {
       const b = this.basePos(p);
-      p.x = p.side === 'home' ? Math.min(b.x, P.L + (P.R - P.L) / 2 - 30) : Math.max(b.x, P.L + (P.R - P.L) / 2 + 30);
+      p.x = this.dir[p.side] > 0 ? Math.min(b.x, P.L + (P.R - P.L) / 2 - 30) : Math.max(b.x, P.L + (P.R - P.L) / 2 + 30);
       p.y = b.y; p.vx = p.vy = 0; p.stun = 0; p.slide = 0; p.diveT = 0; p.cel = null; this.cel = null; this.noCel = null; p.runT = null; p.noPick = 0; p.hold = 0;
       p.fx = this.dir[p.side]; p.fy = 0;
     });
@@ -1156,6 +1212,7 @@ class Match {
   }
   /* ---- ball primitives ---- */
   kick(p, tx, ty, speed, vz, tag) {
+    if (this.gkBlocked(p)) return;
     const b = this.ball;
     const d = Math.hypot(tx - p.x, ty - p.y) || 1;
     b.x = p.x + (tx - p.x) / d * 14; b.y = p.y + (ty - p.y) / d * 14; b.z = 0;
@@ -1188,7 +1245,9 @@ class Match {
     };
     return search(mode === 'through' ? 0.2 : 0.35) || (mode === 'through' ? null : search(-0.3));
   }
+  gkBlocked(p) { return p.role === 'G' && this.ball.owner === p && (this.gkClear || 0) < 2 && (this.gkHold || 0) < 10; }
   doPass(p, mate, mode, dx, dy) {
+    if (this.gkBlocked(p)) return;
     const dir = this.dir[p.side];
     const cpu = this.isCPU(p);
     let tx, ty;
@@ -1215,7 +1274,7 @@ class Match {
     const ux = tx - p.x, uy = ty - p.y;
     const rx = ux * c - uy * s, ry = ux * s + uy * c;
     let speed, vz = 0;
-    if (mode === 'lob') { speed = lobSpeed(d); vz = GRAV * (d / speed) / 2; }
+    if (mode === 'lob') { speed = clamp(d * 0.62 + 90, 260, 520); vz = GRAV * (d / speed) / 2; }
     else speed = mode === 'through' ? clamp(d * 1.5 + 250, 340, 760) : gndSpeed(d);
     this.kick(p, p.x + rx, p.y + ry, speed, vz, mode === 'lob' ? 'lob' : 'pass');
     if (mate) this.ball.target = mate;
@@ -1227,6 +1286,7 @@ class Match {
     return !this.players.some(q => q.side !== p.side && q.role !== 'G' && (Math.hypot(q.x - p.x, q.y - p.y) < 115 || (((q.x - p.x) * dir) > -15 && ((q.x - p.x) * dir) < dg && Math.abs(q.y - p.y) < 105)));
   }
   doShoot(p, charge, aimY) {
+    if (this.gkBlocked(p)) return;
     const dir = this.dir[p.side], gx = dir > 0 ? PITCH.R : PITCH.L, one = this.oneOnOne(p);
     const sd = (12 + (100 - p.info.shotS) * 1.5 + Math.hypot(gx - p.x, PITCH.CY - p.y) * 0.12) * (this.isCPU(p) ? DIFF[this.diff].err : 0.45) * (one ? 0.4 : 1) + Math.max(0, charge - 0.8) * 260 * (one ? 0.5 : 1);
     const ay = aimY + gauss() * sd;
@@ -1275,7 +1335,12 @@ class Match {
     }
     if (pr.KeyI && canAct) this.doPass(p, this.pickMate(p, dx, dy, 'through'), 'through', dx, dy);
     if (pr.KeyJ && canAct) this.doPass(p, this.pickMate(p, dx, dy, 'lob'), 'lob', dx, dy);
-    if (pr.KeyL && !owns) this.startSlide(p);
+    if (pr.KeyL && !owns) { if (this.canHeadShot(p)) this.headShot(p); else if (this.crossIncoming(p)) this.headWant = { p, t: 2.5 }; else this.startSlide(p); }
+    if (this.headWant) { // pre-pressed header: fire as soon as the cross reaches you
+      const hw = this.headWant; hw.t -= dt;
+      if (hw.t <= 0 || this.ball.owner || !(this.ball.tag === 'lob' || this.ball.tag === 'cross') || this.ball.lastSide !== hw.p.side) this.headWant = null;
+      else if (this.canHeadShot(hw.p)) { this.headShot(hw.p); this.headWant = null; }
+    }
     if (pr.KeyL && canAct) { this.charging = true; this.charge = 0.05; }
     if (this.charging) {
       if (!owns) { this.charging = false; this.charge = 0; }
@@ -1520,7 +1585,7 @@ Object.assign(Match.prototype, {
       const score = d - p.info.ovr * 0.04 - (p === this.ctrl ? 3 : 0) - (p === b.target ? 10 : 0);
       if (b.z < 30) {
         if (score < bd) { bd = score; best = p; }
-      } else if (b.z < 58 && p.headCD <= 0 && d < 26) {
+      } else if (b.z < 58 && p.headCD <= 0 && d < 26 && !(p.side === this.human && p.side === b.lastSide && (b.tag === 'lob' || b.tag === 'cross'))) {
         this.header(p); return;
       }
     }
@@ -1532,9 +1597,29 @@ Object.assign(Match.prototype, {
       if (p.side === this.human && p !== this.ctrl && this.switchCD <= 0 && (!this.ctrl || Math.hypot(this.ctrl.x - b.x, this.ctrl.y - b.y) > 70)) this.setCtrl(p);
     }
   },
+  // a cross still in the air (never touched the ground or been controlled) can be headed on at goal
+  canHeadShot(p) {
+    const b = this.ball;
+    return !b.owner && (b.tag === 'lob' || b.tag === 'cross') && b.lastSide === p.side && b.last !== p && p.headCD <= 0 && b.z > 8 && b.z < 95 && Math.hypot(p.x - b.x, p.y - b.y) < 58;
+  },
+  // a teammate's cross is in the air and on its way to this player
+  crossIncoming(p) {
+    const b = this.ball;
+    if (b.owner || !(b.tag === 'lob' || b.tag === 'cross') || b.lastSide !== p.side || b.last === p) return false;
+    return b.target === p || Math.hypot(p.x - b.x, p.y - b.y) < 320;
+  },
+  headShot(p) {
+    const b = this.ball, dir = this.dir[p.side], gx = dir > 0 ? PITCH.R : PITCH.L;
+    p.headCD = 0.5; p.noPick = 0.25; p.headJ = 0.5;
+    const ay = PITCH.CY + rnd(-62, 62) + gauss() * (100 - p.info.shotS) * 0.7, d = Math.hypot(gx - p.x, ay - p.y) || 1, speed = 560;
+    b.vx = (gx - p.x) / d * speed; b.vy = (ay - p.y) / d * speed; b.vz = rnd(-10, 70); b.tag = 'shot';
+    const st = this.stats[p.side]; st.shots++; if (Math.abs(ay - PITCH.CY) < PITCH.GH) st.sot++;
+    p.fx = (gx - p.x) / d; p.fy = (ay - p.y) / d;
+    b.last = p; b.lastSide = p.side; b.sid = (b.sid || 0) + 1; b.target = null; b.owner = null; this.sfx.push('head');
+  },
   header(p) {
     const b = this.ball, dir = this.dir[p.side], gx = dir > 0 ? PITCH.R : PITCH.L;
-    p.headCD = 0.5; p.noPick = 0.25;
+    p.headCD = 0.5; p.noPick = 0.25; p.headJ = 0.5;
     const dg = Math.hypot(gx - p.x, PITCH.CY - p.y);
     const st = this.stats[p.side];
     if (dg < 280) {
@@ -1580,7 +1665,7 @@ Object.assign(Match.prototype, {
     if (this.state === 'sub') { this.stepSub(dt); return; }
     if (this.subQ.length && this.state !== 'goal' && this.state !== 'fulltime') { this.beginSub(); return; }
     this.cpuSubs(dt);
-    for (const q of this.players) { if (q.kickT > 0) q.kickT -= dt; if (this.state === 'goal' && q.diveT > 0) q.diveT -= dt; }
+    for (const q of this.players) { if (q.kickT > 0) q.kickT -= dt; if (q.headJ > 0) q.headJ -= dt; if (this.state === 'goal' && q.diveT > 0) q.diveT -= dt; }
     // state timers
     if (this.state === 'kickoff' || this.state === 'restart') { this.timer -= dt; if (this.timer <= 0 && b.owner) { /* released */ if (this.state === 'kickoff') { this.state = 'play'; } } }
     if (this.state === 'restart' && this.timer <= 0 && b.owner && b.owner !== this.ctrl) { /* CPU/AI taker acts through think */ }
@@ -1607,17 +1692,12 @@ Object.assign(Match.prototype, {
       if (who) this.stats[who].poss += dt;
     }
     this.moveAll(dt, false);
-    { // opposition must back off a keeper who has the ball (they run away, no teleporting)
-      const o = this.ball.owner;
-      if (o && o.role === 'G') for (const q of this.players) {
-        if (q.side === o.side) continue;
-        const dx = q.x - o.x, dy = q.y - o.y, d = Math.hypot(dx, dy) || 1;
-        if (d < 130) {
-          const s = 230 * dt;
-          q.x = clamp(q.x + dx / d * s, PITCH.L + 2, PITCH.R - 2); q.y = clamp(q.y + dy / d * s, PITCH.T + 2, PITCH.B - 2);
-          q.vx = dx / d * 230; q.vy = dy / d * 230; q.fx = dx / d; q.fy = dy / d;
-        }
-      }
+    { // keeper release gate: every opponent must have been outside the keeper's zone for 2s
+      const ko = this.ball.owner;
+      if (ko && ko.role === 'G') {
+        this.gkHold = (this.gkHold || 0) + dt;
+        if (this.players.some(q => q.side !== ko.side && Math.hypot(q.x - ko.x, q.y - ko.y) < 195)) this.gkClear = 0; else this.gkClear = (this.gkClear || 0) + dt;
+      } else { this.gkClear = 0; this.gkHold = 0; }
     }
     this.handleTackles(dt);
     this.handleBallContacts(dt);
@@ -1632,7 +1712,8 @@ Object.assign(Match.prototype, {
           if (tt > 0 && tt < 0.55 && Math.abs(bb.x - p.x) < 330) {
             const yy = bb.y + bb.vy * tt, off = yy - p.y;
             p.diveSid = bb.sid;
-            if (Math.abs(yy - PITCH.CY) < PITCH.GH + 14) { p.diveT = 0.8; p.diveDir = Math.abs(off) < 6 ? (Math.random() < 0.5 ? 1 : -1) : (off > 0 ? 1 : -1); p.diveDist = clamp(Math.abs(off), 24, 46); }
+            if (Math.abs(yy - PITCH.CY) < PITCH.GH + 14) { if (Math.abs(off) < 14) { if (Math.random() < 0.4) { p.diveT = 0.8; p.diveDir = 0; p.diveDist = 0; } /* else: stay put and claim it */ }
+              else { p.diveT = 0.8; p.diveDir = off > 0 ? 1 : -1; p.diveDist = clamp(Math.abs(off), 24, 46); } }
           }
         }
       }
@@ -1683,11 +1764,25 @@ Object.assign(Match.prototype, {
         const dx = tx - p.x, dy = ty - p.y, d = Math.hypot(dx, dy);
         if (!cc.s && c.wait && !c.sc.cel.done) { cc.at = false; }
         else {
-          if (d > 7) { const s = Math.min(spd * (c.type === 'cold' && cc.s ? 0.95 : 1.6), d * 6); tvx = dx / d * s; tvy = dy / d * s; cc.at = false; }
+          if (d > 7) { const s = Math.min(spd * (c.type === 'cold' && cc.s ? 0.95 : (p.role === 'G' ? 2.6 : 1.6)), d * 6); tvx = dx / d * s; tvy = dy / d * s; cc.at = false; }
           else cc.at = true;
           if (cc.s && c.type === 'slide' && !cc.slid && d < 120 && d > 30) { cc.slid = true; p.slide = 0.55; p.sdx = dx / d; p.sdy = dy / d; }
         }
-        if (cc.s && cc.at) {
+        if (cc.s && c.type === 'shirt') { // run for the corner flag, whipping the shirt off and hurling it into the stand
+          if (!cc.fs && d < 190) cc.fs = cc.slid = true;
+          if (cc.fs) { cc.kt += dt; if (cc.kt >= 0.45 && !cc.thr) { cc.thr = true; cc.ox = p.x; cc.oy = p.y; } if (cc.kt > 3) cc.done = true; }
+        }
+        if (cc.s && c.type === 'flip') { // run for the corner, then round-off + backflip on the move, landing at the flag
+          if (!cc.fs && d < 175) cc.fs = cc.slid = true;
+          if (cc.fs) {
+            cc.kt += dt; p.fy = 0;
+            if (cc.kt < 1.1 && d > 1) { const sp = Math.min(d / Math.max(0.08, 1.1 - cc.kt), spd * 3.4); tvx = dx / d * sp; tvy = dy / d * sp; }
+            if (cc.kt > 1.95) cc.done = true;
+          }
+          accel = 30;
+        }
+        if (cc.s && c.type === 'point') { cc.kt += dt; if (cc.at && cc.kt > 2.4) cc.done = true; }
+        if (cc.s && cc.at && c.type !== 'flip' && c.type !== 'shirt' && c.type !== 'point') {
           cc.kt += dt;
           if (c.type === 'kick') { p.fx = c.fl[0] < 600 ? -1 : 1; p.fy = 0; if (cc.kt > 0.5 && !c.hit) { c.hit = { t: 0 }; this.sfx.push('post'); } if (cc.kt > 1.25) cc.done = true; }
           else if (c.type === 'cold' && cc.kt > 1.0) cc.done = true;
@@ -1717,6 +1812,18 @@ Object.assign(Match.prototype, {
         const stop = m.hold || 6;
         if (d > stop) { const s = Math.min(spd * m.sp, d * 6); tvx = dx / d * s; tvy = dy / d * s; }
       }
+      { // opposition must back off a keeper who has the ball: turn and run away at normal speed
+        const ko = this.ball.owner;
+        if (ko && ko.role === 'G' && ko.side !== p.side && !frozen && !(p.slide > 0)) {
+          const dx = p.x - ko.x, dy = p.y - ko.y, d = Math.hypot(dx, dy) || 1;
+          if (d < 195) p.flee = true; else if (d > 222) p.flee = false;
+          if (p.flee) {
+            let ax = dx / d, ay = dy / d;
+            if ((p.x < PITCH.L + 12 && ax < 0) || (p.x > PITCH.R - 12 && ax > 0)) { ax = 0; ay = Math.abs(ay) > 0.1 ? Math.sign(ay) : Math.sign(PITCH.CY - p.y) || 1; }
+            if ((p.y < PITCH.T + 12 && ay < 0) || (p.y > PITCH.B - 12 && ay > 0)) { ay = 0; ax = Math.abs(ax) > 0.1 ? Math.sign(ax) : Math.sign(600 - p.x) || 1; }
+            tvx = ax * spd; tvy = ay * spd; accel = 12;
+          } else if (d < 245) { const rad = (tvx * dx + tvy * dy) / d; if (rad < 0) { tvx -= rad * dx / d; tvy -= rad * dy / d; } }        } else p.flee = false;
+      }
       const k = Math.min(1, dt * accel);
       p.vx += (tvx - p.vx) * k; p.vy += (tvy - p.vy) * k;
       p.x += p.vx * dt; p.y += p.vy * dt;
@@ -1725,7 +1832,7 @@ Object.assign(Match.prototype, {
       p.step += sp * dt * 0.055;
       if (p.role === 'G') {
         const gl = this.dir[p.side] > 0 ? P.L : P.R;
-        const lo = Math.min(gl, gl + this.dir[p.side] * 170), hi = Math.max(gl, gl + this.dir[p.side] * 170);
+        const g0 = gl + this.dir[p.side] * 8, lo = Math.min(g0, gl + this.dir[p.side] * 170), hi = Math.max(g0, gl + this.dir[p.side] * 170);
         p.x = clamp(p.x, lo, hi); p.y = clamp(p.y, P.CY - 160, P.CY + 160);
       } else { p.x = clamp(p.x, P.L + 2, P.R - 2); p.y = clamp(p.y, P.T + 2, P.B - 2); }
     }
@@ -1888,7 +1995,7 @@ Object.assign(Match.prototype, {
     if (b.x < P.L || b.x > P.R) {
       const right = b.x > P.R;
       const inGoal = Math.abs(b.y - P.CY) < P.GH && b.z < P.GZ;
-      if (inGoal) { this.goal(right ? 'home' : 'away'); return; }
+      if (inGoal) { this.goal((this.dir.home > 0) === right ? 'home' : 'away'); return; }
       b.x = right ? P.R : P.L; b.vx = (right ? -1 : 1) * Math.abs(b.vx) * 0.7;
     }
   },
@@ -1909,16 +2016,21 @@ Object.assign(Match.prototype, {
     this.noCel = this.score[side] < this.score[other] ? side : null;
     if (scorer && scorer.side === side && scorer.role !== 'G' && this.score[side] >= this.score[other]) {
       const P = PITCH, nm = scorer.info.name, tm = scorer.info.team;
-      const custom = tm === 'cry' && nm === 'Mateta' ? 'kick' : (tm === 'che' && (nm === 'Palmer' || nm === 'Rogers')) ? 'cold' : null;
-      const types = ['slide', 'plane', 'fist', 'crowd', 'hug', 'manager', 'dance'], type = custom || types[(Math.random() * types.length) | 0];
-      const cx = scorer.x < 600 ? P.L : P.R, cy = scorer.y < P.CY ? P.T : P.B, ix = cx === P.L ? 1 : -1, iy = cy === P.T ? 1 : -1;
+      const custom = tm === 'cry' && nm === 'Mateta' ? 'kick' : (tm === 'cry' && nm.includes('Wharton')) ? 'flip' : (tm === 'che' && (nm === 'Palmer' || nm === 'Rogers')) ? 'cold' : (tm === 'liv' && nm === 'Isak') ? 'point' : null;
+      const types = ['slide', 'plane', 'fist', 'crowd', 'hug', 'manager', 'dance', 'flip'];
+      // a go-ahead goal in the 85th minute or later: shirt off, the whole squad piles on
+      const late = this.half === 2 && minute >= 85 && this.score[side] - this.score[other] === 1;
+      const type = late ? 'shirt' : (custom || types[(Math.random() * types.length) | 0]);
+      const cx = scorer.x < 600 ? P.L : P.R, cy = type === 'shirt' ? P.B : scorer.y < P.CY ? P.T : P.B, ix = cx === P.L ? 1 : -1, iy = cy === P.T ? 1 : -1;
       let tx = type === 'crowd' ? cx + ix * 70 : cx + ix * 30, ty = type === 'crowd' ? cy + iy * 4 : cy + iy * 26;
       if (type === 'manager') { tx = DUG_X[side] + 118; ty = P.B - 8; }
       else if (type === 'dance') { tx = clamp(scorer.x, 160, 1040); ty = clamp(scorer.y, 130, 590); }
       else if (type === 'kick') { tx = cx + ix * 26; ty = cy + iy * 8; }
+      else if (type === 'flip') { tx = cx + ix * 34; ty = cy + iy * 30; }
+      else if (type === 'shirt') { tx = cx + ix * 36; ty = cy - 12; this.timer = 8.2; }
       this.cel = { type, sc: scorer, tx, ty, cy: iy, age: 0, fl: [cx, cy], ix, wait: false };
       scorer.cel = { s: true, at: false, slid: false, kt: 0, done: false };
-      const mates = this.players.filter(q => q.side === side && q !== scorer && q.role !== 'G');
+      const mates = this.players.filter(q => q.side === side && q !== scorer && (q.role !== 'G' || type === 'shirt'));
       mates.forEach((q, i) => {
         if (type === 'dance') { const k = ((i + 1) >> 1) * (i % 2 ? 1 : -1); q.cel = { s: false, at: false, ox: k * 30, oy: 0 }; }
         else { const a = 0.6 + i * (Math.PI * 2 / Math.max(1, mates.length)); q.cel = { s: false, at: false, ox: Math.cos(a) * 30, oy: Math.sin(a) * 26 }; }
@@ -2379,7 +2491,7 @@ function drawMatchCard(g, m, label) {
     g.fillStyle = k.body; g.fillRect(bx, y0, W, H);
     g.shadowColor = 'transparent'; g.fillStyle = acc; g.fillRect(bx, y0 + H - 6, W, 6);
     g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = txtOn(k.body);
-    g.font = '44px ' + FONT_D; g.fillText(m.teams[side].short, bx + W / 2, y0 + 32);
+    g.font = '44px ' + FONT_D; g.fillText(m.teams[side].short, bx + W / 2, y0 + H / 2 + 1);
     const ev = m.events.filter(e => e.side === side);
     if (ev.length) {
       const ph = 12 + ev.length * 26;
@@ -2393,6 +2505,12 @@ function drawMatchCard(g, m, label) {
   g.font = '48px ' + FONT_D; g.fillText(m.score.home + ' - ' + m.score.away, x0 + W + WC / 2, y0 + 33);
   g.font = '700 15px ' + FONT_B; g.fillText(label, x0 + W + WC / 2, y0 + 68);
   g.restore();
+}
+// the stands erupt: rattle the camera through a late winner's celebration
+function camShake(m, t) {
+  const c = m.cel; if (!c || c.type !== 'shirt') return [0, 0];
+  const a = c.age, amp = 5.5 * Math.min(1, Math.max(0, (a - 0.1) / 0.25)) * Math.max(0.4, 1 - a / 10);
+  return [(Math.sin(t * 47) + 0.5 * Math.sin(t * 29 + 1)) * amp, Math.cos(t * 53) * amp * 0.8];
 }
 function renderMatch(g, m, t) {
   g.drawImage(stadiumImg, 0, 0); drawFans(g, m, t);
@@ -2438,10 +2556,16 @@ function getCrewImg() {
   return crewImg;
 }
 const celOn = (m, rep) => (!rep || m.repCel) && m.state === 'goal';
-const MANAGERS = { ars:[2,1,5,2], avl:[2,1,6,1], bou:[2,6,2,4], bre:[2,2,5,1], bha:[1,2,6,2], che:[2,3,6,2], cov:[2,3,2,2], cry:[2,2,6,2], eve:[1,7,6,1], ful:[2,1,5,4], hul:[2,1,6,1], ips:[2,6,2,2], lee:[2,3,6,2,6], liv:[2,2,5,2], mci:[2,6,1,4], mun:[1,3,5,2], new:[2,3,6,2], nfo:[1,3,5,1], sun:[1,2,7,1], tot:[1,4,6,2,6] };
+const MANAGERS = { ars:[2,1,5,2], avl:[2,1,6,1], bou:[2,6,2,4], bre:[2,2,5,1], bha:[1,2,6,2], che:[2,3,6,2], cov:[2,3,2,2], cry:[2,2,6,2], eve:[1,7,6,1], ful:[2,1,5,4], hul:[2,1,6,1], ips:[2,6,2,2], lee:[2,3,6,2,6], liv:[2,2,5,2], mci:[2,6,1,4], mun:[1,3,5,2], new:[2,3,6,2], nfo:[1,3,5,1], sun:[1,2,9,1], tot:[1,4,6,2,6] };
 function managerLook(team) {
   const a = MANAGERS[team && team.id] || [2, 6, 2, 1];
   return { skin: a[0], hair: HAIR_COLS[a[1] - 1], style: HAIR_TYPES[a[2] - 1], facial: FACIALS[a[3] - 1], beard: a[4] ? HAIR_COLS[a[4] - 1] : undefined };
+}
+// keep a diving keeper's whole body on the pitch side of his goal line
+function diveX(p, m, a) {
+  const dir = m.dir[p.side], gl = dir > 0 ? PITCH.L : PITCH.R;
+  const minField = Math.min(0, dir * Math.sin(a) * 76) - 8 * Math.abs(Math.cos(a));
+  return gl + dir * Math.max(dir * (p.x - gl), -minField);
 }
 function drawDugouts(g, m, t, rep) {
   const P = PITCH;
@@ -2452,8 +2576,9 @@ function drawDugouts(g, m, t, rep) {
     g.fillStyle = '#18233f'; g.fillRect(x1 + 4, ty + 16, W - 8, by - ty - 20);
     (m.bench[side] || []).forEach((inf, k) => {
       if (m.subAnim && m.subAnim.side === side && m.subAnim.k === k) return;
+      if (celOn(m, rep) && m.cel && m.cel.type === 'shirt' && m.cel.sc.side === side && m.cel.age > 0.3 + k * 0.08) return;
       const jump = scored ? Math.abs(Math.sin(t * 9 + k * 1.3)) * 9 : 0;
-      drawPlayer(g, x1 + 30 + k * 45, 722 - jump, { kit: inf.pos === 'GK' ? GK_KIT : kit, skin: inf.skin, hair: inf.hair, style: inf.style, facial: inf.facial, face: 0, step: 0, s: 0.58 });
+      drawPlayer(g, x1 + 30 + k * 45, 722 - jump, { kit: inf.pos === 'GK' ? GK_KIT : kit, skin: inf.skin, hair: inf.hair, style: inf.style, facial: inf.facial, beard: inf.beard, face: 0, step: 0, s: 0.58 });
     });
     g.fillStyle = '#2a3558'; g.fillRect(x1 + 8, 716, W - 16, 11); g.fillStyle = '#3d4d7e'; g.fillRect(x1 + 8, 716, W - 16, 2);
     g.fillStyle = 'rgba(170,205,235,.30)'; g.fillRect(x1 - 6, ty, W + 12, 14); g.strokeStyle = 'rgba(220,240,255,.65)'; g.lineWidth = 1.5; g.strokeRect(x1 - 6, ty, W + 12, 14);
@@ -2509,25 +2634,52 @@ function drawActors(g, m, t, rep) {
   items.push({ y: m.off.f4.y, off: m.off.f4, kind: 'f4' }, { y: m.off.l1.y, off: m.off.l1, kind: 'l1' }, { y: m.off.l2.y, off: m.off.l2, kind: 'l2' }, { y: m.off.ref.y, off: m.off.ref, kind: 'ref' });
   const SA = !rep && m.subAnim;
   if (SA) { if (SA.inS) items.push({ y: SA.inS.y, sp: SA.inS, sa: SA }); if (SA.leaver) items.push({ y: SA.leaver.y, sp: SA.leaver, sa: SA }); }
+  const SH = celOn(m, rep) && m.cel && m.cel.type === 'shirt' ? m.cel : null;
+  if (SH) (m.bench[SH.sc.side] || []).forEach((inf, k) => {
+    const x1 = SH.sc.side === 'home' ? 330 : 630, sx = x1 + 30 + k * 45, tx2 = SH.tx + SH.ix * (26 + k * 18), ty2 = PITCH.B + 8;
+    const uu = Math.min(1, Math.max(0, (SH.age - 0.3 - k * 0.08) / 1.7)), us = uu * uu * (3 - 2 * uu);
+    items.push({ y: 722 + (ty2 - 722) * Math.min(1, us * 3), runner: { inf, x: sx + (tx2 - sx) * us, y: 722 + (ty2 - 722) * Math.min(1, us * 3), u: uu, k, fx: tx2 > sx ? 1 : -1, kit: m.kits[SH.sc.side] } });
+  });
   items.sort((a, c) => a.y - c.y);
   for (const it of items) {
+    if (it.runner) { const r = it.runner, i = r.inf, sc = 0.58 + 0.54 * Math.min(1, r.u * 4), arr = r.u >= 1;
+      drawPlayer(g, r.x, r.y - (arr ? Math.abs(Math.sin(t * 9 + r.k * 1.3)) * 12 : 0), { kit: i.pos === 'GK' ? GK_KIT : r.kit, skin: i.skin, hair: i.hair, style: i.style, facial: i.facial, beard: i.beard, num: i.num, face: arr ? -SH.ix : r.fx, step: t * 3.2, run: r.u > 0 && !arr ? 1 : 0, arms: arr ? 2 : (r.u > 0 ? 1 : 0), t, s: sc }); continue; }
     if (it.ball) { if (!(!rep && m.ball.owner && m.ball.owner.role === 'G')) drawBall(g, m.ball, t); continue; }
     if (it.off) { drawOfficial(g, it.off, it.kind, t, rep ? null : m.subAnim); continue; }
     if (it.sp) {
       const e = it.sp, i = e.info, sc = 1.12 - Math.min(1, Math.max(0, (e.y - 654) / 68)) * 0.54, five = it.sa.phase === 'five';
-      drawPlayer(g, e.x, e.y, { kit: e.kit, skin: i.skin, hair: i.hair, style: i.style, facial: i.facial, num: i.num, face: e.fx, step: e.step, run: isMoving(e, t) ? 1 : 0, t, arms: five ? (e.fx > 0 ? 1 : 5) : 0, s: sc });
+      drawPlayer(g, e.x, e.y, { kit: e.kit, skin: i.skin, hair: i.hair, style: i.style, facial: i.facial, beard: i.beard, num: i.num, face: e.fx, step: e.step, run: isMoving(e, t) ? 1 : 0, t, arms: five ? (e.fx > 0 ? 1 : 5) : 0, s: sc });
       continue;
     }
     if (it.flag) { drawCornerFlag(g, m, it.flag[0], it.flag[1], it.flag[2], t); continue; }
     const p = it.p, i = p.info;
-    const o = { kit: p.kit, skin: i.skin, hair: i.hair, style: i.style, facial: i.facial, num: i.num, face: p.fx, step: p.step, run: isMoving(p, t) ? 1 : 0, kick: p.kickT > 0 && !rep ? 1 - p.kickT / 0.24 : 0, t, s: 1.12 };
-    let jump = 0, tilt = 0, arms = 0, shake = 0;
+    const o = { kit: p.kit, skin: i.skin, hair: i.hair, style: i.style, facial: i.facial, beard: i.beard, num: i.num, face: p.fx, step: p.step, run: isMoving(p, t) ? 1 : 0, kick: p.kickT > 0 && !rep ? 1 - p.kickT / 0.24 : 0, t, s: 1.12 };
+    let jump = 0, tilt = 0, arms = 0, shake = 0, pivot = 0, vf = 0, dxo = 0;
     const cc = celOn(m, rep) && m.cel && p.cel ? p.cel : null;
     if (cc) {
       const ty = m.cel.type;
       if (ty === 'dance') { const sw = Math.sin(t * 7); if (cc.at) { arms = sw > 0 ? 1 : 5; jump = Math.abs(sw) * 5; tilt = sw * 0.1; } }
       else if (ty === 'manager' && cc.s) { arms = cc.at ? 2 : 0; if (cc.at) jump = Math.abs(Math.sin(t * 8)) * 9; }
       else if (ty === 'kick' && cc.s) { if (cc.at) { const kt = cc.kt || 0; jump = 34 * Math.sin(Math.PI * Math.min(1, Math.max(0, (kt - 0.1) / 0.85))); o.kick = Math.min(1, Math.max(0, (kt - 0.2) / 0.35)); } }
+      else if (ty === 'flip' && cc.s) {
+        if (cc.fs || cc.slid) {
+          const kt = cc.kt || 0, dr = Math.sign(m.cel.tx - p.x) || 1;
+          if (kt < 0.5) { const q = kt / 0.5; tilt = dr * 2 * Math.PI * easeOut(q); jump = 8 + 16 * Math.sin(Math.PI * q); arms = 2; pivot = 30; }
+          else if (kt < 1.1) { const q = (kt - 0.5) / 0.6; vf = 2 * Math.PI * q; jump = 54 * Math.sin(Math.PI * q); arms = 2; pivot = 30; }
+          else { const q = Math.min(1, (kt - 1.1) / 0.85); jump = 26 * Math.abs(Math.sin(Math.PI * q * 2)); arms = 1; }
+        }
+      }
+      else if (ty === 'shirt' && cc.s) {
+        if (cc.fs || cc.slid) {
+          const kt = cc.kt || 0;
+          if (kt < 0.45) arms = 2; else { o.bare = true; arms = 2; if (cc.at) jump = Math.abs(Math.sin(t * 8)) * 16; }
+        }
+      }
+      else if (ty === 'point' && cc.s) { // sprint for the corner, jabbing a hand back over the shoulder twice
+        const kt = cc.kt || 0;
+        if (kt >= 0.25 && kt < 1.6) { arms = 7; o.face = -1.6; o.pt = -(Math.sign(p.fx) || 1); o.pj = Math.max(0, Math.sin((kt - 0.25) * Math.PI * 2 / 0.675)); }
+        else if (kt >= 1.6 && cc.at) { arms = 1; jump = Math.abs(Math.sin(t * 7)) * 10; }
+      }
       else if (ty === 'cold' && cc.s) { arms = 6; shake = Math.sin(t * 50) * 1.3; }
       else if (cc.s) {
         if (ty === 'plane') { tilt = Math.sin(t * 9) * 0.5; arms = 3; }
@@ -2537,6 +2689,7 @@ function drawActors(g, m, t, rep) {
         else if (ty === 'slide') { arms = cc.slid ? 0 : 2; if (cc.at) { jump = Math.abs(Math.sin(t * 7)) * 8; arms = 2; } }
       } else { jump = cc.at ? Math.abs(Math.sin(t * 8 + p.slot * 1.7)) * 11 : 0; arms = cc.at ? 2 : 0; }
     } else if (celOn(m, rep) && m.flash && p.side === m.flash.side && m.noCel !== p.side) jump = Math.abs(Math.sin(t * 9 + p.slot)) * 12;
+    if (p.headJ > 0) jump = Math.max(jump, Math.sin((1 - p.headJ / 0.5) * Math.PI) * 22);
     if (!rep && p === m.ctrl) {
       g.strokeStyle = '#ffd23f'; g.lineWidth = 2.5; g.beginPath(); g.ellipse(p.x, p.y + 1, 20, 8, 0, 0, 7); g.stroke();
     }
@@ -2544,16 +2697,18 @@ function drawActors(g, m, t, rep) {
     if (m.subAnim && m.subAnim.p === p && m.subAnim.phase === 'five' && !rep) o.arms = p.fx > 0 ? 1 : 5;
     if (p.diveT > 0) {
       const f = 1 - p.diveT / 0.8, up = easeOut(f * 2.2), rec = 1 - Math.max(0, (f - 0.72) / 0.28);
-      g.save(); g.translate(p.x, p.y + p.diveDir * p.diveDist * up * rec - Math.sin(Math.min(1, f * 1.4) * Math.PI) * 16);
-      g.rotate(-p.diveDir * 1.3 * up * rec); drawPlayer(g, 0, 0, o); g.restore();
+      const a = (p.diveDir ? -p.diveDir * 1.3 : m.dir[p.side] * 1.0) * up * rec;
+      g.save(); g.translate(diveX(p, m, a), p.y + p.diveDir * p.diveDist * up * rec - Math.sin(Math.min(1, f * 1.4) * Math.PI) * 16);
+      g.rotate(a); drawPlayer(g, 0, 0, o); g.restore();
     } else if (p.slide > 0) { g.save(); g.translate(p.x, p.y); g.rotate(-p.sdx * 1.25 + (p.sdy * 0.3)); drawPlayer(g, 0, 0, o); g.restore(); }
-    else if (tilt) { g.save(); g.translate(p.x, p.y - jump); g.rotate(tilt); drawPlayer(g, 0, 0, o); g.restore(); }
+    else if (vf) { g.save(); g.translate(p.x + dxo, p.y - jump - pivot); g.scale(1, Math.cos(vf)); drawPlayer(g, 0, pivot, o); g.restore(); }
+    else if (tilt) { g.save(); g.translate(p.x + dxo, p.y - jump - pivot); g.rotate(tilt); drawPlayer(g, 0, pivot, o); g.restore(); }
     else drawPlayer(g, p.x + shake, p.y - jump, o);
     if (!rep && m.ball.owner === p && p.role === 'G') {
       let hx = p.x, hy = p.y - 38;
       if (p.diveT > 0) {
-        const f = 1 - p.diveT / 0.8, up = easeOut(f * 2.2), rec = 1 - Math.max(0, (f - 0.72) / 0.28), a = -p.diveDir * 1.3 * up * rec;
-        const ox = p.x, oy = p.y + p.diveDir * p.diveDist * up * rec - Math.sin(Math.min(1, f * 1.4) * Math.PI) * 16, ly = -66 * 1.12;
+        const f = 1 - p.diveT / 0.8, up = easeOut(f * 2.2), rec = 1 - Math.max(0, (f - 0.72) / 0.28), a = (p.diveDir ? -p.diveDir * 1.3 : m.dir[p.side] * 1.0) * up * rec;
+        const ox = diveX(p, m, a), oy = p.y + p.diveDir * p.diveDist * up * rec - Math.sin(Math.min(1, f * 1.4) * Math.PI) * 16, ly = -66 * 1.12;
         hx = ox - ly * Math.sin(a); hy = oy + ly * Math.cos(a);
       }
       drawBall(g, { x: hx, y: hy + 7, z: 0 }, t);
@@ -2569,6 +2724,14 @@ function drawActors(g, m, t, rep) {
         g.fillStyle = 'rgba(8,12,24,.85)'; g.fillRect(p.x - 22, p.y + 8, 44, 6);
         g.fillStyle = m.charge > 0.8 ? '#ff4d5a' : '#ffd23f'; g.fillRect(p.x - 21, p.y + 9, 42 * m.charge, 4);
       }
+    }
+  }
+  if (SH && SH.sc.cel && SH.sc.cel.kt >= 0.45 && SH.sc.cel.ox) { // the shirt sails into the stand
+    const cc = SH.sc.cel, q = (cc.kt - 0.45) / 1.1;
+    if (q < 1) {
+      const out = SH.ix > 0 ? -1 : 1, x = cc.ox + out * 90 * q, y = cc.oy + 120 * q - Math.sin(Math.PI * q) * 80, k = SH.sc.kit;
+      g.save(); g.translate(x, y); g.rotate(q * 14); g.scale(1 - q * 0.35, 1 - q * 0.35);
+      g.translate(-18, -15); drawShirtIcon(g, k, 36, 30, null, false); g.restore();
     }
   }
 }
@@ -2612,7 +2775,7 @@ function iconCanvas(kit, px, num, outline) {
 function spriteCanvas(p, kit, w, h, s) {
   const c = document.createElement('canvas'); c.width = w; c.height = h;
   const g = c.getContext('2d');
-  drawPlayer(g, w / 2, h - 5, { kit, skin: p.skin, hair: p.hair, style: p.style, facial: p.facial, num: p.num, face: 0, step: 0, s });
+  drawPlayer(g, w / 2, h - 5, { kit, skin: p.skin, hair: p.hair, style: p.style, facial: p.facial, beard: p.beard, num: p.num, face: 0, step: 0, s });
   return c;
 }
 
@@ -2627,7 +2790,7 @@ function drawHero(t) {
   g.clearRect(0, 0, 720, 200);
   heroPlayers.forEach((h, i) => {
     const bob = Math.abs(Math.sin(t * 3 + i * 0.9)) * 8;
-    drawPlayer(g, 70 + i * 145, 188 - bob, { kit: h.kit, skin: h.p.skin, hair: h.p.hair, style: h.p.style, facial: h.p.facial, num: h.p.num, face: 0, step: t * 6 + i, s: 2.5 });
+    drawPlayer(g, 70 + i * 145, 188 - bob, { kit: h.kit, skin: h.p.skin, hair: h.p.hair, style: h.p.style, facial: h.p.facial, beard: h.p.beard, num: h.p.num, face: 0, step: t * 6 + i, s: 2.5 });
   });
 }
 
@@ -2805,7 +2968,7 @@ function startIntro(m) {
 function endIntro() { App.intro = null; App.last = performance.now(); }
 function fitText(g, txt, maxW, size, font) { g.font = size + 'px ' + font; const w = g.measureText(txt).width; if (w > maxW) g.font = Math.floor(size * maxW / w) + 'px ' + font; }
 function outlined(g, txt, x, y, fill, lw) { g.lineJoin = 'round'; g.lineWidth = lw || 6; g.strokeStyle = '#0a0f1c'; g.strokeText(txt, x, y); g.fillStyle = fill; g.fillText(txt, x, y); }
-function introSprite(p, o) { const i = p.info; return Object.assign({ kit: p.kit, skin: i.skin, hair: i.hair, style: i.style, facial: i.facial, num: i.num, face: 0, step: 0 }, o); }
+function introSprite(p, o) { const i = p.info; return Object.assign({ kit: p.kit, skin: i.skin, hair: i.hair, style: i.style, facial: i.facial, beard: i.beard, num: i.num, face: 0, step: 0 }, o); }
 function drawIntro(g, m, I, t) {
   g.drawImage(stadiumImg, 0, 0); drawFans(g, m, t);
   g.save(); g.translate(VIEW.cx, VIEW.cy); g.scale(VIEW.s, VIEW.s); g.translate(-600, -360); g.drawImage(pitchImg, 0, 0); g.restore();
@@ -2920,12 +3083,12 @@ function applyOff(m, s) { const O = m.off; [O.l1.x, O.l1.step, O.l1.fx] = s.l1; 
 function recFrame(m) {
   const B = App.buf; if (m.state !== 'play' && m.state !== 'goal') { if (B.length) B.length = 0; return; }
   App.recN = (App.recN || 0) + 1;
-  B.push({ p: m.players.map(p => [p.x, p.y, p.fx, p.step, p.slide, p.sdx || 0, p.sdy || 0, p.diveT || 0, p.diveDir || 0, p.diveDist || 0, p.cel ? [p.cel.s ? 1 : 0, p.cel.at ? 1 : 0, p.cel.kt || 0, p.cel.slid ? 1 : 0, p.cel.ox || 0, p.cel.oy || 0] : 0]), b: [m.ball.x, m.ball.y, m.ball.z || 0], o: snapOff(m),
+  B.push({ p: m.players.map(p => [p.x, p.y, p.fx, p.step, p.slide, p.sdx || 0, p.sdy || 0, p.diveT || 0, p.diveDir || 0, p.diveDist || 0, p.cel ? [p.cel.s ? 1 : 0, p.cel.at ? 1 : 0, p.cel.kt || 0, p.cel.slid ? 1 : 0, p.cel.ox || 0, p.cel.oy || 0] : 0, p.headJ || 0]), b: [m.ball.x, m.ball.y, m.ball.z || 0], o: snapOff(m),
     c: m.state === 'goal' && m.cel ? [m.cel.type, m.players.indexOf(m.cel.sc), m.cel.tx, m.cel.ty, m.cel.age, m.cel.hit ? m.cel.hit.t : -1, m.cel.fl[0], m.cel.fl[1], m.cel.ix, m.noCel || null] : null, g: m.state === 'goal' ? 1 : 0 });
-  if (B.length > 240) B.shift();
+  if (B.length > 340) B.shift();
 }
 function startReplay(m) {
-  const B = App.buf, after = App.recN - (App.goalN || App.recN), gi = B.length - after, start = Math.max(0, gi - 56), end = Math.min(B.length, gi + (m.cel ? 112 : 70));
+  const B = App.buf, after = App.recN - (App.goalN || App.recN), gi = B.length - after, start = Math.max(0, gi - 56), end = Math.min(B.length, gi + (m.cel ? (m.cel.type === 'flip' ? 135 : m.cel.type === 'shirt' ? 225 : 112) : 70));
   if (end - start < 30 || gi - start < 20) { App.repDone = m.events.length; return; }
   const fr = B.slice(start, end), g0 = gi - start, d1 = g0 / 30 / 0.6, d2 = (fr.length - 1 - g0) / 30 / 1.0;
   const cf = fr.find(f => f.c);
@@ -2940,7 +3103,7 @@ function drawReplay(g, m, R, t) {
   const sv = { st: m.state, cel: m.cel, flash: m.flash, nc: m.noCel, rc: m.repCel, pc: m.players.map(p => p.cel) };
   if (A.c) { m.state = 'goal'; m.cel = { type: A.c[0], sc: m.players[A.c[1]], tx: A.c[2], ty: A.c[3], age: A.c[4], hit: A.c[5] >= 0 ? { t: A.c[5] } : null, fl: [A.c[6], A.c[7]], ix: A.c[8] }; m.noCel = A.c[9]; m.flash = { t: 1, side: R.side }; m.repCel = true; } else m.repCel = false;
   const save = m.players.map(p => [p.x, p.y, p.fx, p.step, p.slide, p.sdx, p.sdy, p.diveT, p.diveDir, p.diveDist]), sb = [m.ball.x, m.ball.y, m.ball.z];
-  m.players.forEach((p, n) => { const a = A.p[n], b = Bn.p[n]; p.x = L(a[0], b[0]); p.y = L(a[1], b[1]); p.fx = a[2]; p.step = a[3]; p.slide = a[4]; p.sdx = a[5]; p.sdy = a[6]; p.diveT = a[7]; p.diveDir = a[8]; p.diveDist = a[9]; const c = a[10]; p.cel = c ? { s: !!c[0], at: !!c[1], kt: c[2], slid: !!c[3], ox: c[4], oy: c[5] } : null; });
+  m.players.forEach((p, n) => { const a = A.p[n], b = Bn.p[n]; p.x = L(a[0], b[0]); p.y = L(a[1], b[1]); p.fx = a[2]; p.step = a[3]; p.slide = a[4]; p.sdx = a[5]; p.sdy = a[6]; p.diveT = a[7]; p.diveDir = a[8]; p.diveDist = a[9]; p.headJ = a[11] || 0; const c = a[10]; p.cel = c ? { s: !!c[0], at: !!c[1], kt: c[2], slid: !!c[3], ox: c[4], oy: c[5] } : null; });
   m.ball.x = L(A.b[0], Bn.b[0]); m.ball.y = L(A.b[1], Bn.b[1]); m.ball.z = L(A.b[2], Bn.b[2]);
   // camera: follows the ball, pushes in on the goal for the finish
   const gx = R.frames[R.gi].b[0] > 600 ? PITCH.R : PITCH.L;
@@ -2956,12 +3119,13 @@ function drawReplay(g, m, R, t) {
   R.cam.x += (tx - R.cam.x) * 0.12; R.cam.y += (ty - R.cam.y) * 0.12;
   const mg = fi > R.gi ? 28 : 0, cx = clamp(R.cam.x, 600 / z - mg, 1200 - 600 / z + mg), cy = clamp(R.cam.y, 360 / z - mg, 720 - 360 / z + mg);
   g.fillStyle = '#0b1220'; g.fillRect(0, 0, 1200, 720);
-  g.save(); g.translate(600, 360); g.scale(z, z); g.translate(-cx, -cy);
+  const shk = camShake(m, t);
+  g.save(); g.translate(600 + shk[0], 360 + shk[1]); g.scale(z, z); g.translate(-cx, -cy);
   g.drawImage(pitchImg, 0, 0); drawDugouts(g, m, t, true);
   drawActors(g, m, t, true); drawNets(g, m);
   g.restore();
   m.state = sv.st; m.cel = sv.cel; m.flash = sv.flash; m.noCel = sv.nc; m.repCel = sv.rc; m.players.forEach((p, n) => { p.cel = sv.pc[n]; });
-  m.players.forEach((p, n) => { const s = save[n]; p.x = s[0]; p.y = s[1]; p.fx = s[2]; p.step = s[3]; p.slide = s[4]; p.sdx = s[5]; p.sdy = s[6]; p.diveT = s[7]; p.diveDir = s[8]; p.diveDist = s[9]; });
+  m.players.forEach((p, n) => { const s = save[n]; p.x = s[0]; p.y = s[1]; p.fx = s[2]; p.step = s[3]; p.slide = s[4]; p.sdx = s[5]; p.sdy = s[6]; p.diveT = s[7]; p.diveDir = s[8]; p.diveDist = s[9]; p.headJ = 0; });
   m.ball.x = sb[0]; m.ball.y = sb[1]; m.ball.z = sb[2]; applyOff(m, saveO);
   // broadcast dressing: vignette, scanlines, letterbox, badge
   const vg = g.createRadialGradient(600, 360, 260, 600, 360, 760); vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,.55)'); g.fillStyle = vg; g.fillRect(0, 0, 1200, 720);
@@ -2982,7 +3146,7 @@ function drawReplay(g, m, R, t) {
 
 function frame(now) {
   App.raf = requestAnimationFrame(frame);
-  if (App.match && !$('s-match').hidden) AudioDir.update(App.match);
+  if (App.match && !$('s-match').hidden) { AudioDir.update(App.match); const q = $('b-quit'), hq = App.match.state === 'fulltime'; if (q.hidden !== hq) q.hidden = hq; }
   const dt = Math.min(0.05, (now - App.last) / 1000); App.last = now; App.t += dt;
   if (!$('s-title').hidden) drawHero(App.t);
   const m = App.match;
@@ -3003,7 +3167,7 @@ function frame(now) {
     if (m.sfx.length) { m.sfx.forEach(n => Snd.play(n)); m.sfx.length = 0; }
     if (m.state === 'fulltime') { App.overT += dt; if (!App.over && App.overT > 0.8) { App.over = true; resultOverlay(m); } }
   }
-  renderMatch($('cv').getContext('2d'), m, App.t);
+  { const cg = $('cv').getContext('2d'), sk = camShake(m, App.t); cg.save(); cg.translate(sk[0], sk[1]); renderMatch(cg, m, App.t); cg.restore(); }
   updateHUD(m);
 }
 
