@@ -133,7 +133,7 @@ select{background:var(--panel2);color:var(--fg);border:2px solid var(--line);bor
 .sbtn.sel{border-color:var(--accent);background:#1d2a52}
 .sbtn:disabled{opacity:.4}
 .pends{width:100%;font-size:13px}.pendrow{display:flex;gap:8px;align-items:center}
-.pendrow .x{background:none;border:0;color:#ff7b86;font-size:18px}
+.pendrow .x{background:none;border:1px solid #ff7b86;border-radius:6px;color:#ff7b86;font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 8px;cursor:pointer}
 .btn:disabled{opacity:.4;pointer-events:none}
 .card h2{font-size:clamp(22px,4vw,34px);color:var(--accent)}
 .res{font-family:var(--display);font-size:clamp(28px,6vw,52px);font-variant-numeric:tabular-nums}
@@ -162,7 +162,7 @@ select{background:var(--panel2);color:var(--fg);border:2px solid var(--line);bor
     <span><kbd>K</kbd> pass</span>
     <span><kbd>L</kbd> shoot (hold to power up)</span>
     <span><kbd>I</kbd> through ball</span>
-    <span><kbd>J</kbd> cross</span>
+    <span><kbd>J</kbd> cross / stand tackle</span>
     <span><kbd>Space</kbd> switch player</span>
   </div>
   <p class="hint">Keyboard game. Click the pitch once so it picks up your keys.</p>
@@ -222,7 +222,7 @@ select{background:var(--panel2);color:var(--fg);border:2px solid var(--line);bor
     <button class="btn ghost" id="b-quit">Pause</button>
   </div>
   <div id="legend">
-    <span><kbd>WASD</kbd> move</span><span><kbd>K</kbd> pass</span><span><kbd>L</kbd> shoot / slide</span><span><kbd>I</kbd> through</span><span><kbd>J</kbd> cross</span><span><kbd>Space</kbd> switch</span><span><kbd>P</kbd> pause</span><span><kbd>M</kbd> sound</span>
+    <span><kbd>WASD</kbd> move</span><span><kbd>K</kbd> pass</span><span><kbd>L</kbd> shoot / slide</span><span><kbd>I</kbd> through</span><span><kbd>J</kbd> cross / stand tackle</span><span><kbd>Space</kbd> switch</span><span><kbd>P</kbd> pause</span><span><kbd>M</kbd> sound</span>
   </div>
 </section>
 <script>
@@ -319,26 +319,36 @@ window.TEAMS_A = [
   ["Anthony",19,"FW",74,4,1,2,1]
  ] },
  { id:"bha", name:"Brighton", short:"BHA", kit:{"body": "#0057b8", "accent": "#ffffff", "pattern": "pin", "shorts": "#0057b8", "socks": "#0057b8", "numColor": "#ffffff", "collar": "#ffffff"}, players:[
-  ["Verbruggen",1,"GK",78,1,4,5,1],
-  ["Steele",23,"GK",72,1,2,5,1],
-  ["McGill",38,"GK",64,1,2,5,1],
-  ["Hadjam",3,"DF",72,3,1,5,1],
-  ["Struijk",4,"DF",74,1,2,5,1],
-  ["Dunk",5,"DF",78,1,2,5,2],
-  ["Boscagli",21,"DF",76,1,1,5,1],
-  ["Kadioglu",24,"DF",80,3,1,5,2],
-  ["Vuskovic",44,"DF",78,1,1,5,1],
-  ["Hinshelwood",8,"MF",77,1,2,5,1],
-  ["Gross",13,"MF",79,1,2,5,2],
-  ["Gomez",25,"MF",74,1,2,5,1],
-  ["Ayari",26,"MF",74,2,1,5,1],
-  ["Wieffer",27,"MF",75,1,2,5,1],
-  ["O'Riley",33,"MF",80,1,2,5,1],
-  ["Tzimas",9,"FW",74,1,1,5,1],
-  ["Rutter",10,"FW",77,1,1,5,1],
-  ["Minteh",11,"FW",75,4,1,2,1],
-  ["Kostoulas",19,"FW",75,1,1,5,1],
-  ["Mitoma",22,"FW",80,2,1,5,1]
+  ["Verbruggen",1,"GK",81,1,4,8,2,4],
+  ["Steele",23,"GK",73,1,3,2,2],
+  ["McGill",38,"GK",62,1,2,8,6],
+  ["Hadjam",3,"DF",69,3,1,8,4],
+  ["Struijk",4,"DF",76,2,1,11,5],
+  ["Dunk",5,"DF",77,1,2,2,7],
+  ["Costinha",20,"DF",75,1,4,8,1],
+  ["Boscagli",21,"DF",78,1,3,8,5],
+  ["Kadioglu",24,"DF",80,2,2,6,4],
+  ["De Cuyper",29,"DF",78,1,3,12,6],
+  ["Svoboda",30,"DF",72,1,4,8,2],
+  ["Vuskovic",44,"DF",81,1,3,11,6],
+  ["Mitoma",7,"MF",81,2,1,5,1],
+  ["Hinshelwood",8,"MF",77,1,3,11,2],
+  ["Gross",13,"MF",79,1,2,8,6],
+  ["Andres",14,"MF",74,2,1,8,1],
+  ["Gomez",25,"MF",78,3,1,11,1],
+  ["Ayari",26,"MF",79,2,1,11,5],
+  ["Wieffer",27,"MF",79,1,3,11,6],
+  ["O'Riley",33,"MF",77,1,2,11,7],
+  ["Yalcouye",35,"MF",70,5,1,9,6],
+  ["Tzimas",9,"FW",73,1,2,11,6],
+  ["Rutter",10,"FW",77,3,4,12,7,1],
+  ["Minteh",11,"FW",80,5,1,2,5],
+  ["David",12,"FW",76,5,1,3,5],
+  ["Osman",15,"FW",72,5,1,12,5],
+  ["Kostoulas",19,"FW",73,2,2,11,5],
+  ["Ferguson",28,"FW",74,1,4,8,1],
+  ["Yohanna",36,"FW",67,5,1,7,6],
+  ["Azeez",39,"FW",75,3,1,2,5]
  ] },
 ];
 window.TEAMS_B = [
@@ -419,7 +429,7 @@ window.TEAMS_B = [
   ["Guessand", 29, "MF", 78, 5, 1, 7, 4],
   ["Nketiah", 9, "FW", 75, 5, 1, 2, 5],
   ["Mateta", 14, "FW", 81, 5, 1, 1, 4],
-  ["Strand Larsen", 22, "FW", 77, 1, 2, 6, 1]
+  ["Strand Larsen", 22, "FW", 77, 1, 2, 11, 1]
  ] },
  { id:"eve", name:"Everton", short:"EVE", kit:{"body": "#003399", "accent": "#ffffff", "pattern": "solid", "shorts": "#ffffff", "socks": "#003399", "numColor": "#ffffff"}, players:[
   ["Pickford",1,"GK",82,1,2,5,2],
@@ -561,50 +571,59 @@ window.TEAMS_C = [
   ["Ngumoha",73,"FW",75,4,1,3,1]
  ] },
  { id:"mci", name:"Manchester City", short:"MCI", kit:{"body": "#6cabdd", "accent": "#1c2c5b", "pattern": "solid", "shorts": "#ffffff", "socks": "#6cabdd", "numColor": "#1c2c5b", "collar": "#ffffff"}, players:[
-  ["Donnarumma",1,"GK",87,2,1,5,2],
-  ["Bettinelli",13,"GK",66,1,2,5,1],
-  ["Rulli",28,"GK",72,2,1,5,4],
-  ["Dias",3,"DF",86,1,1,5,2],
-  ["Guehi",6,"DF",83,4,1,2,1],
-  ["Ait-Nouri",21,"DF",80,3,1,5,2],
-  ["Gvardiol",24,"DF",85,1,2,5,1],
-  ["O'Reilly",33,"DF",79,1,2,5,1],
-  ["Khusanov",45,"DF",78,2,1,5,1],
-  ["Anderson",5,"MF",84,1,2,5,1],
-  ["Kovacic",8,"MF",80,1,2,5,1],
-  ["Cherki",10,"MF",85,2,1,5,1],
-  ["Bouaddi",32,"MF",76,3,1,5,1],
-  ["M. Nunes",27,"MF",80,1,1,5,1],
-  ["Foden",47,"MF",85,1,4,5,1],
-  ["Marmoush",7,"FW",82,3,1,5,2],
-  ["Haaland",9,"FW",92,1,4,5,1],
-  ["Doku",11,"FW",83,4,1,7,1],
-  ["Semenyo",42,"FW",85,4,1,7,2],
-  ["Monga",40,"FW",70,4,1,2,1]
+  ["Donnarumma",1,"GK",89,2,1,8,4,1],
+  ["Bettinelli",13,"GK",69,1,2,8,2],
+  ["Rulli",28,"GK",80,2,1,11,2],
+  ["Dias",3,"DF",87,1,2,8,4,2],
+  ["Guehi",6,"DF",85,5,1,2,2],
+  ["Ait-Nouri",21,"DF",81,2,1,2,4,1],
+  ["Gvardiol",24,"DF",85,2,1,11,4,1],
+  ["Khusanov",45,"DF",82,2,1,11,1],
+  ["Lewis",82,"DF",77,3,1,12,1],
+  ["M. Nunes",27,"DF",83,2,1,11,4,1],
+  ["Reis",22,"DF",76,3,1,6,1],
+  ["Anderson",5,"MF",84,1,3,8,1],
+  ["Kovacic",8,"MF",81,1,2,11,4,2],
+  ["Cherki",10,"MF",86,2,1,12,4,1],
+  ["Bouaddi",32,"MF",80,3,1,10,6],
+  ["Fernandez",17,"MF",86,2,1,8,1],
+  ["Foden",47,"MF",84,1,2,2,1],
+  ["O'Reilly",33,"MF",83,3,1,12,6],
+  ["Allan",37,"FW",77,4,1,2,5],
+  ["Haaland",9,"FW",91,1,4,2,1],
+  ["Doku",11,"FW",84,5,1,7,1],
+  ["Ndiaye",7,"FW",82,4,1,2,5],
+  ["Semenyo",42,"FW",85,5,1,7,4,1]
  ] },
 ];
 window.TEAMS_D = [
- { id:"mun", name:"Man United", short:"MUN", kit:{"body": "#da291c", "accent": "#111111", "pattern": "solid", "shorts": "#ffffff", "socks": "#111111", "numColor": "#ffffff", "collar": "#ffffff"}, players:[
-  ["Lammens",1,"GK",79,1,2,5,1],
-  ["Heaton",22,"GK",68,1,2,5,2],
-  ["Darlow",12,"GK",70,1,2,5,2],
-  ["Martinez",6,"DF",83,2,1,5,2],
-  ["De Ligt",4,"DF",80,1,4,5,1],
-  ["Maguire",5,"DF",79,1,2,1,2],
-  ["Dalot",2,"DF",80,2,1,5,1],
-  ["Shaw",23,"DF",78,1,2,5,1],
-  ["Yoro",15,"DF",78,2,1,5,1],
-  ["Bruno",8,"MF",88,2,1,5,2],
-  ["Tielemans",18,"MF",82,1,2,5,2],
-  ["Santos",17,"MF",79,2,1,5,1],
-  ["Ugarte",25,"MF",78,2,1,5,1],
-  ["Mainoo",37,"MF",80,4,1,2,1],
-  ["Mount",7,"MF",76,1,4,5,1],
-  ["Cunha",10,"FW",85,3,1,5,2],
-  ["Mbeumo",19,"FW",85,4,1,2,2],
-  ["Sesko",30,"FW",82,1,4,5,1],
-  ["Rashford",9,"FW",84,4,1,2,2],
-  ["Amad",16,"FW",81,4,1,2,2]
+ { id:"mun", name:"Manchester United", short:"MUN", kit:{"body": "#da291c", "accent": "#111111", "pattern": "solid", "shorts": "#ffffff", "socks": "#111111", "numColor": "#ffffff", "collar": "#ffffff"}, players:[
+  ["Lammens",1,"GK",82,1,1,11,2],
+  ["Heaton",22,"GK",67,1,2,8,2],
+  ["Darlow",12,"GK",76,1,4,11,2,2],
+  ["Dalot",2,"DF",78,1,2,8,2],
+  ["De Ligt",4,"DF",82,1,3,6,4,3],
+  ["Dorgu",13,"DF",78,5,1,7,1],
+  ["Heaven",26,"DF",75,5,1,7,5],
+  ["Maguire",5,"DF",82,1,2,8,2],
+  ["Martinez",6,"DF",82,2,1,6,6],
+  ["Mazraoui",3,"DF",80,3,1,12,4,1],
+  ["Shaw",23,"DF",79,1,3,8,2],
+  ["Yoro",15,"DF",78,3,1,3,5],
+  ["Baleba",20,"MF",80,5,1,4,6],
+  ["Fernandes",8,"MF",89,1,1,8,4,2],
+  ["Mainoo",37,"MF",81,5,1,12,1],
+  ["Mount",7,"MF",78,1,2,8,2,2],
+  ["Santos",17,"MF",80,3,1,12,7],
+  ["Tielemans",18,"MF",85,3,1,2,7],
+  ["Ugarte",25,"MF",77,1,2,8,1],
+  ["Cunha",10,"FW",84,3,1,12,4,1],
+  ["Amad",16,"FW",79,4,1,4,5],
+  ["Lacey",31,"FW",65,1,2,8,1],
+  ["Mbeumo",19,"FW",84,3,1,1,4,2],
+  ["Rashford",9,"FW",82,4,1,3,5],
+  ["Sesko",30,"FW",82,1,2,2,1],
+  ["Zirkzee",11,"FW",77,3,1,4,5]
  ] },
  { id:"new", name:"Newcastle", short:"NEW", kit:{"body": "#f2f2f2", "accent": "#111111", "pattern": "stripes", "shorts": "#111111", "socks": "#111111", "numColor": "#111111", "collar": "#00c8ff"}, players:[
   ["Pope",1,"GK",84,1,2,5,2],
@@ -628,7 +647,7 @@ window.TEAMS_D = [
   ["Elanga",19,"FW",79,4,1,2,1],
   ["Osula",10,"FW",74,4,1,2,1]
  ] },
- { id:"nfo", name:"Nottm Forest", short:"NFO", kit:{"body": "#dd0000", "accent": "#ffffff", "pattern": "solid", "shorts": "#ffffff", "socks": "#dd0000", "numColor": "#ffffff"}, players:[
+ { id:"nfo", name:"Nottingham Forest", short:"NFO", kit:{"body": "#dd0000", "accent": "#ffffff", "pattern": "solid", "shorts": "#ffffff", "socks": "#dd0000", "numColor": "#ffffff"}, players:[
   ["Sels",26,"GK",79,1,2,5,2],
   ["Bott",1,"GK",68,1,2,5,1],
   ["Benda",13,"GK",66,1,1,5,1],
@@ -673,32 +692,41 @@ window.TEAMS_D = [
   ["Angulo",10,"FW",74,4,1,2,1]
  ] },
  { id:"tot", name:"Tottenham", short:"TOT", kit:{"body": "#ffffff", "accent": "#132257", "pattern": "solid", "shorts": "#132257", "socks": "#ffffff", "numColor": "#132257", "collar": "#ffffff"}, players:[
-  ["Kinsky",31,"GK",76,1,2,5,1],
-  ["Dubravka",39,"GK",75,1,1,5,2],
-  ["Austin",40,"GK",62,1,2,5,1],
-  ["Robertson",3,"DF",81,1,2,5,2],
-  ["Danso",4,"DF",79,4,1,2,1],
-  ["Senesi",5,"DF",79,3,1,5,2],
-  ["van de Ven",37,"DF",85,1,4,5,1],
-  ["Porro",23,"DF",80,1,1,5,2],
-  ["Udogie",13,"DF",79,2,1,5,1],
-  ["Tonali",16,"MF",85,1,1,5,4],
-  ["Maddison",10,"MF",84,1,2,5,1],
-  ["Bergvall",15,"MF",78,1,4,5,1],
-  ["Gallagher",8,"MF",78,1,2,5,1],
-  ["Sarr",29,"MF",79,5,1,2,1],
-  ["Bentancur",30,"MF",79,2,4,5,1],
-  ["Kudus",20,"FW",82,5,1,2,1],
-  ["Kulusevski",21,"FW",82,1,4,5,2],
-  ["Solanke",19,"FW",78,4,1,2,1],
-  ["Richarlison",9,"FW",78,4,4,2,1],
-  ["Tel",11,"FW",77,4,1,2,1]
+  ["Kinsky",31,"GK",77,1,5,11,6,4],
+  ["Dubravka",39,"GK",77,1,2,8,4,2],
+  ["Austin",40,"GK",67,4,1,2,2],
+  ["Robertson",3,"DF",80,1,2,8,2,3],
+  ["Tosin",4,"DF",77,5,1,2,5],
+  ["Senesi",5,"DF",82,2,2,11,2],
+  ["van Hecke",6,"DF",81,1,5,8,1],
+  ["Udogie",13,"DF",79,5,1,7,6],
+  ["Porro",23,"DF",83,2,1,11,1],
+  ["Davies",33,"DF",74,1,2,8,2],
+  ["van de Ven",37,"DF",81,1,3,8,2],
+  ["Xavi",7,"MF",81,3,2,3,5],
+  ["Gallagher",8,"MF",78,1,2,6,6],
+  ["Maddison",10,"MF",82,1,3,6,4,2],
+  ["Gray",14,"MF",77,1,1,11,6],
+  ["Bergvall",15,"MF",78,1,5,8,1],
+  ["Tonali",16,"MF",85,1,2,8,6],
+  ["Fernandes",18,"MF",80,2,1,11,1],
+  ["Bentancur",30,"MF",79,2,2,11,4,2],
+  ["Odobert",28,"MF",78,4,1,12,5],
+  ["Richarlison",9,"FW",78,3,7,2,6,1],
+  ["Mudryk",27,"FW",75,1,3,6,7],
+  
+  ["Tel",11,"FW",78,5,1,3,5],
+  ["Savio",17,"FW",80,3,1,2,5],
+  ["Solanke",19,"FW",79,3,1,12,4,1],
+  ["Kudus",20,"FW",81,5,1,12,5],
+  ["Kulusevski",21,"FW",81,1,3,11,2,3],
+  ["Marmoush",22,"FW",82,3,1,12,7]
  ] },
 ];
 /* ===== CORE: data prep, formations, sprites ===== */
 const HAIR_COLS = ['#1c1613', '#4a2f1d', '#7a5130', '#a98a52', '#e0c36a', '#8a8a8a', '#e6e6e6'];
 const HAIR_TYPES = ['bald', 'buzz', 'cornrows', 'afro', 'medium', 'slick', 'dreads', 'combover', 'balding', 'longslick', 'crop', 'curly'];
-const FACIALS = ['', 'st', 'mu', 'bd', 'gt'];
+const FACIALS = ['', 'st', 'mu', 'bd', 'gt', 'gs', 'hs'];
 const SKIN = ['#f7d9c4', '#e9bb92', '#c68a58', '#8a5632', '#523020'];
 const POSIDX = { GK: 0, DF: 1, MF: 2, FW: 3 };
 const ROLE2POS = { G: 'GK', D: 'DF', M: 'MF', F: 'FW' };
@@ -789,7 +817,7 @@ const ALT_KITS = {
 /* collar / kit tweaks and number colours (colour, optional outline) for [home, away] */
 const HOME_PATCH = {
   ars: { collar: '#8b0f18', sleeve: '#ffffff' }, bou: { collar: '#b3936e' }, bre: { body: '#ffffff', accent: '#d3151f', sleeve: '#d3151f' },
-  cov: { body: '#3cb5ec', shorts: '#3cb5ec', socks: '#3cb5ec', collar: '#0b1f4d' }, hul: { body: '#111111', accent: '#ff7a00', sleeve: '#ff7a00', socks: '#111111', collar: '#ffffff' }, eve: { collar: '#ffd100', cuff: '#ffffff' },
+  cov: { body: '#3cb5ec', shorts: '#0b1f4d', socks: '#3cb5ec', collar: '#0b1f4d' }, hul: { body: '#111111', accent: '#ff7a00', sleeve: '#ff7a00', socks: '#111111', collar: '#ffffff' }, eve: { collar: '#ffd100', cuff: '#ffffff' },
   ful: { collar: '#d3151f', sleeve: '#ffffff', cuff: '#111111' }, ips: { collar: '#0b2a6b' }, lee: { collar: '#ffcd00', accent: '#1d428a' },
   mun: { collar: '#111111' }, nfo: { collar: '#8b0f18', cuff: '#8b0f18' }, sun: { collar: '#e21b23', sleeve: '#ffffff', cuff: '#e21b23' }, bha: { cuff: '#0057b8' }, new: { body: '#111111', accent: '#f2f2f2', sleeve: '#f2f2f2' }, tot: { collar: '#132257' }
 };
@@ -1022,7 +1050,7 @@ function drawPlayer(g, x, y, o) {
   const ph = o.step || 0, sw = Math.sin(ph) * run * 3;
   // shadow
   g.fillStyle = 'rgba(0,0,0,0.28)'; g.beginPath(); g.ellipse(0, 1, 13, 4.5, 0, 0, 7); g.fill();
-  const kn = o.kneel ? 1 : 0; if (kn) g.translate(0, 6); // kneeling: whole body drops onto the knees
+  const kn = o.kneel ? 1 : 0; if (kn) g.translate(0, 6); const sit = o.sit ? 1 : 0; if (sit) g.translate(0, 9); // kneeling: whole body drops onto the knees
   // legs: swing + lift while running, kick swing when o.kick (0..1 progress)
   const kp = o.kick > 0 ? o.kick : 0, kl = fs > 0 ? 1 : -1;
   for (const side of [-1, 1]) {
@@ -1030,6 +1058,13 @@ function drawPlayer(g, x, y, o) {
     let fx = side * 4.5 + sn * 4.5 * (fd ? fd : 0.35), fy = -1 - Math.max(0, sn) * 5;
     if (kp && side === kl) { fx = side * 4.5 + fs * (-5 + 15 * kp); fy = -1 - Math.sin(kp * Math.PI) * 7; }
     const hx0 = side * 4.5, hy0 = -11;
+    if (sit) { // sitting cross-legged: thighs out to the knees, shins crossing in front
+      const kx = side * 14, ky = -3, ax = -side * 4, ay = -1;
+      g.lineCap = 'butt'; g.lineWidth = 5; g.strokeStyle = skin; g.beginPath(); g.moveTo(hx0, hy0); g.lineTo(kx, ky); g.stroke();
+      g.beginPath(); g.moveTo(kx, ky); g.lineTo(ax, ay); g.stroke();
+      g.strokeStyle = kit.socks; g.beginPath(); g.moveTo(kx + (ax - kx) * 0.4, ky + (ay - ky) * 0.4); g.lineTo(ax, ay); g.stroke();
+      g.fillStyle = '#16161c'; g.fillRect(ax - 3.5 - side * 1.5, ay - 2.5, 7, 3.2); continue;
+    }
     if (kn) { g.lineCap = 'butt'; g.lineWidth = 5; g.strokeStyle = skin; g.beginPath(); g.moveTo(hx0, hy0); g.lineTo(side * 5.5, -6); g.stroke(); g.fillStyle = 'rgba(0,0,0,0.16)'; g.beginPath(); g.arc(side * 5.5, -5.5, 2.6, 0, 7); g.fill(); g.fillStyle = '#16161c'; g.fillRect(side > 0 ? 8.5 : -12.5, -7.5, 4, 2.2); continue; }
     g.lineCap = 'butt'; g.lineWidth = 5;
     g.strokeStyle = skin; g.beginPath(); g.moveTo(hx0, hy0); g.lineTo(fx, fy - 2); g.stroke();
@@ -1061,8 +1096,17 @@ function drawPlayer(g, x, y, o) {
       g.fillStyle = skin; g.beginPath(); g.arc(fx2, fy2 - 1, 3, 0, 7); g.fill();
       return;
     }
+    else if (mode === 10) { // meditating: arms out and down, forearms bent up, open palms
+      const ex = side * 22, ey = -25, fx2 = side * 27, fy2 = -34;
+      g.lineCap = 'butt'; g.lineWidth = 5;
+      g.strokeStyle = skin; g.beginPath(); g.moveTo(sx, sy); g.lineTo(ex, ey); g.lineTo(fx2, fy2); g.stroke();
+      if (!o.bare) { g.strokeStyle = kit.sleeve || kit.body; g.beginPath(); g.moveTo(sx, sy); g.lineTo(sx + (ex - sx) * 0.5, sy + (ey - sy) * 0.5); g.stroke(); }
+      g.fillStyle = skin; g.beginPath(); g.arc(fx2, fy2 - 1.5, 2.8, 0, 7); g.fill();
+      return;
+    }
     else if (mode === 8) { hx2 = side * 6.5; hy2 = -67; } // both arms straight up, pointing at the sky
     else if (mode === 9 && side > 0) return; // face-mask arm is drawn over the head, below
+    else if (mode === 11) return; // both-hands mask: both arms are drawn over the head, below
     else if (mode === 3) { hx2 = side * 32; hy2 = -42; }
     else if (mode === 4 && side === (o.pt > 0 ? 1 : -1)) { hx2 = side * 36; hy2 = -41; }
     else { hx2 = side * 13.5 - side * Math.abs(sn); hy2 = -24 + sn * 4; }
@@ -1109,20 +1153,38 @@ function drawPlayer(g, x, y, o) {
   } else if (o.facial === 'st') {
     g.fillStyle = fc; g.globalAlpha = 0.5; g.beginPath(); g.arc(hx, hy, hr - 0.3, 0.1 * Math.PI, 0.9 * Math.PI); g.lineTo(hx - hr + 3, hy + 3); g.quadraticCurveTo(hx, hy + 5, hx + hr - 3, hy + 3); g.closePath(); g.fill(); g.globalAlpha = 1;
   } else if (o.facial === 'gt') {
-    g.fillStyle = fc; g.beginPath(); g.ellipse(hx, hy + 7.4, 2.5, 2.3, 0, 0, 7); g.fill(); g.fillRect(hx - 2.8, hy + 3.2, 5.6, 1.3);
+    g.fillStyle = fc; g.beginPath(); g.ellipse(hx, hy + 8, 4.2, 1.8, 0, 0, 7); g.fill();
+  } else if (o.facial === 'gs') {
+    g.fillStyle = fc; g.globalAlpha = 0.5; g.beginPath(); g.ellipse(hx, hy + 8, 4.2, 1.8, 0, 0, 7); g.fill(); g.globalAlpha = 1;
+  } else if (o.facial === 'hs') { // heavy stubble: shadow along the jaw, chin patch
+    g.fillStyle = fc; g.globalAlpha = 0.42; g.beginPath(); g.arc(hx, hy, hr - 0.3, 0.12 * Math.PI, 0.88 * Math.PI); g.quadraticCurveTo(hx, hy + 5.6, hx + hr * 0.9, hy + 3.9); g.closePath(); g.fill();
+    g.globalAlpha = 0.85; g.beginPath(); g.ellipse(hx, hy + 8, 4.2, 1.8, 0, 0, 7); g.fill(); g.globalAlpha = 1;
   } else if (o.facial === 'mu') {
-    g.fillStyle = fc; g.fillRect(hx - 4, hy + 3, 8, 2); g.fillRect(hx - 1.2, hy + 5, 2.4, 3);
+    g.fillStyle = fc; g.fillRect(hx - 4, hy + 2, 8, 1.8);
   }
   // eyes + mouth
-  g.fillStyle = '#16161c'; g.fillRect(hx - 4.2 + (o.face || 0) * 0.8, hy - 2, 2.2, 2.6); g.fillRect(hx + 2 + (o.face || 0) * 0.8, hy - 2, 2.2, 2.6);
-  if (o.facial !== 'mu' && o.facial !== 'gt') { g.fillRect(hx - 2 + (o.face || 0) * 0.8, hy + 4, 4, 1); }
+  g.fillStyle = '#16161c'; if (o.shut) { g.fillRect(hx - 4.4 + (o.face || 0) * 0.8, hy - 0.6, 2.8, 0.9); g.fillRect(hx + 1.6 + (o.face || 0) * 0.8, hy - 0.6, 2.8, 0.9); } else { g.fillRect(hx - 4.2 + (o.face || 0) * 0.8, hy - 2, 2.2, 2.6); g.fillRect(hx + 2 + (o.face || 0) * 0.8, hy - 2, 2.2, 2.6); }
+  { g.fillRect(hx - 2 + (o.face || 0) * 0.8, hy + 4, 4, 1); }
   drawHair(g, hx, hy, hr, o.style, o.hair, true);
   if (am === 9) { // forearm clamped across the face, only the eyes showing
     const px = hx + 1, ex = 15.5, ey = -37, wx = px - 8.5, wy = hy + 6;
     g.lineCap = 'butt'; g.lineJoin = 'round';
+    g.strokeStyle = 'rgba(0,0,0,0.38)'; g.lineWidth = 8; g.beginPath(); g.moveTo(ex, ey); g.lineTo(px + 6, wy); g.lineTo(wx, wy); g.stroke(); // darker edge so the arm reads against the face
     g.strokeStyle = skin; g.lineWidth = 6.5; g.beginPath(); g.moveTo(ex, ey); g.lineTo(px + 6, wy); g.lineTo(wx, wy); g.stroke();
     g.strokeStyle = kit.sleeve || kit.body; g.lineWidth = 5; g.beginPath(); g.moveTo(11.5, -35); g.lineTo(ex, ey); g.stroke();
     if (!o.bare) { g.strokeStyle = kit.cuff || kit.collar || kit.accent; g.lineWidth = 5.2; g.beginPath(); g.moveTo(ex - 0.6, ey + 0.4); g.lineTo(ex + 0.2, ey - 0.2); g.stroke(); }
+  }
+  if (am === 11) { // both arms bent up from the shoulders, forearms clamped over the nose and mouth, only the eyes showing
+    const px = hx + 1, wy = hy + 5;
+    g.lineCap = 'butt'; g.lineJoin = 'round';
+    [1, -1].forEach(sd => {
+      const sx = sd * 11.5, sy = -35, ex = sd * 14.5, ey = -31, ox = px + sd * 4.5, ix = px - sd * 0.5;
+      g.strokeStyle = 'rgba(0,0,0,0.38)'; g.lineWidth = 8; g.beginPath(); g.moveTo(ex, ey); g.lineTo(ox, wy); g.lineTo(ix, wy); g.stroke(); // darker edge so the forearm reads against the face
+      g.strokeStyle = skin; g.lineWidth = 6.5; g.beginPath(); g.moveTo(ex, ey); g.lineTo(ox, wy); g.lineTo(ix, wy); g.stroke(); // bare forearm only: skin shows beyond the sleeve end, never on the shoulder side
+      g.strokeStyle = kit.sleeve || kit.body; g.lineWidth = 5.4; g.beginPath(); g.moveTo(sx, sy); g.lineTo(ex, ey); g.stroke(); // sleeve covers the whole upper arm
+      if (!o.bare) { g.strokeStyle = kit.cuff || kit.collar || kit.accent; g.lineWidth = 5.6; g.beginPath(); g.moveTo(sx + (ex - sx) * 0.82, sy + (ey - sy) * 0.82); g.lineTo(ex, ey); g.stroke(); }
+      else { g.strokeStyle = skin; g.lineWidth = 5.4; g.beginPath(); g.moveTo(sx, sy); g.lineTo(ex, ey); g.stroke(); }
+    });
   }
   g.restore();
 }
@@ -1235,7 +1297,7 @@ class Match {
     taker.x = 600 - 14 * this.dir[side]; taker.y = P.CY;
     const b = this.ball;
     b.x = 600; b.y = P.CY; b.z = 0; b.vx = b.vy = b.vz = 0; b.owner = taker; b.last = taker;
-    this.state = 'kickoff'; this.timer = first ? 1.8 : 1.4; this.rs = { kind: 'kickoff', taker };
+    this.kickSubs = false; this.state = 'kickoff'; this.timer = first ? 1.8 : 1.4; this.rs = { kind: 'kickoff', taker };
     if (this.human) {
       const h = this.players.filter(p => p.side === this.human && p.role !== 'G');
       this.setCtrl(side === this.human ? taker : h.sort((a, b2) => Math.hypot(a.x - 600, a.y - 360) - Math.hypot(b2.x - 600, b2.y - 360))[0]);
@@ -1358,6 +1420,10 @@ class Match {
     }
     return PITCH.CY + (p.y < PITCH.CY ? 40 : -40) * Math.sign(Math.random() - 0.5);
   }
+  startStand(p) { // standing tackle: a quick poke at the ball, longer reach and a better chance than just walking into him, but a miss leaves you flat-footed
+    if (p.slide > 0 || p.stun > 0 || p.stT > 0 || p.stCD > 0) return;
+    p.stT = 0.3; p.stCD = 0.75; p.kickT = 0.24;
+  }
   startSlide(p) {
     if (p.slide > 0 || p.stun > 0) return;
     p.slide = 0.42; p.sdx = p.fx; p.sdy = p.fy;
@@ -1379,6 +1445,7 @@ class Match {
     }
     if (pr.KeyI && canAct) this.doPass(p, this.pickMate(p, dx, dy, 'through'), 'through', dx, dy);
     if (pr.KeyJ && canAct) this.doPass(p, this.pickMate(p, dx, dy, 'lob'), 'lob', dx, dy);
+    if (pr.KeyJ && !owns && !canAct) this.startStand(p);
     if (pr.KeyL && !owns) { if (this.canHeadShot(p)) this.headShot(p); else if (this.crossIncoming(p)) this.headWant = { p, t: 2.5 }; else this.startSlide(p); }
     if (this.headWant) { // pre-pressed header: fire as soon as the cross reaches you
       const hw = this.headWant; hw.t -= dt;
@@ -1685,11 +1752,11 @@ Object.assign(Match.prototype, {
     for (const q of this.players) {
       if (q.side === c.side || q.role === 'G' || q.stun > 0 || q.tackleCD > 0) continue;
       const d = Math.hypot(q.x - c.x, q.y - c.y);
-      const reach = q.slide > 0 ? 36 : 20;
+      const reach = q.slide > 0 ? 36 : q.stT > 0 ? 31 : 20;
       if (d > reach) continue;
       q.tackleCD = 0.55;
       const dcfg = this.isCPU(q) ? DIFF[this.diff] : DIFF[1];
-      let chance = 0.3 + (q.info.tackS - c.info.dribS) * 0.009 + (q.slide > 0 ? 0.3 : 0) + (dcfg.speed - 1) * 1.5;
+      let chance = 0.3 + (q.info.tackS - c.info.dribS) * 0.009 + (q.slide > 0 ? 0.3 : 0) + (q.stT > 0 ? 0.18 : 0) + (dcfg.speed - 1) * 1.5;
       if (this.isCPU(c)) chance -= (dcfg.speed - 1) * 1.5 * 0;
       if (Math.random() < clamp(chance, 0.08, 0.85)) {
         c.stun = 0.45; c.noPick = 0.5;
@@ -1697,7 +1764,7 @@ Object.assign(Match.prototype, {
         else { b.owner = null; const a = Math.atan2(q.fy, q.fx) + rnd(-0.8, 0.8); b.vx = Math.cos(a) * 210; b.vy = Math.sin(a) * 210; b.vz = 0; b.last = q; b.tag = null; }
         this.sfx.push('tackle');
         return;
-      } else { q.stun = q.slide > 0 ? 0.3 : 0.12; }
+      } else { q.stun = q.slide > 0 ? 0.3 : q.stT > 0 ? 0.3 : 0.12; }
     }
   },
   /* ---- main step ---- */
@@ -1707,7 +1774,7 @@ Object.assign(Match.prototype, {
     this.switchCD -= dt;
     this.stepOfficials(dt);
     if (this.state === 'sub') { this.stepSub(dt); return; }
-    if (this.subQ.length && this.state !== 'goal' && this.state !== 'fulltime') { this.beginSub(); return; }
+    if (this.subQ.length && ((this.state === 'play' || this.state === 'restart') && b.owner && b.owner.role === 'G' || this.state === 'kickoff' && this.kickSubs)) { this.beginSub(); return; } // a queued sub only goes on while a keeper has the ball
     this.cpuSubs(dt);
     for (const q of this.players) { if (q.kickT > 0) q.kickT -= dt; if (q.headJ > 0) q.headJ -= dt; if (this.state === 'goal' && q.diveT > 0) q.diveT -= dt; }
     // state timers
@@ -1718,13 +1785,14 @@ Object.assign(Match.prototype, {
     if (this.state === 'goal') {
       this.timer -= dt; this.stepBall(dt); this.moveAll(dt, true);
       if (this.cel) { this.cel.age += dt; if (this.cel.hit) this.cel.hit.t += dt; }
-      if (this.timer <= 0) this.kickoff(this.lastConceded, false);
+      if (this.timer <= 0) { this.kickoff(this.lastConceded, false); if (this.subQ.length) this.kickSubs = true; }
       return;
     }
     if (this.state === 'halftime') {
       this.timer -= dt;
       if (this.timer <= 0) {
-        if (!this.htCpu) { this.htCpu = true; this.cpuHalftimeSubs(); if (this.subQ.length) return; }
+        if (!this.htCpu) { this.htCpu = true; this.cpuHalftimeSubs(); }
+        while (this.subQ.length) this.instantSub(this.subQ.shift()); // half-time changes are just made, no walk-on
         this.half = 2; this.stopDone = false; this.stop = null; this.kickoff('away', false); }
       return;
     }
@@ -1796,7 +1864,7 @@ Object.assign(Match.prototype, {
   moveAll(dt, celebrate) {
     const P = PITCH;
     for (const p of this.players) {
-      p.stun = Math.max(0, p.stun - dt); p.noPick = Math.max(0, p.noPick - dt); p.tackleCD = Math.max(0, p.tackleCD - dt); p.headCD = Math.max(0, p.headCD - dt);
+      p.stun = Math.max(0, p.stun - dt); p.noPick = Math.max(0, p.noPick - dt); p.tackleCD = Math.max(0, p.tackleCD - dt); p.stT = Math.max(0, (p.stT || 0) - dt); p.stCD = Math.max(0, (p.stCD || 0) - dt); p.headCD = Math.max(0, p.headCD - dt);
       let tvx = 0, tvy = 0, accel = 9;
       const frozen = celebrate || this.state === 'halftime' || this.state === 'fulltime' || (this.state === 'kickoff' && this.timer > 0);
       const spd = p.info.speed * this.pace;
@@ -1806,7 +1874,7 @@ Object.assign(Match.prototype, {
       } else if (celebrate && p.cel && this.cel && !(p.stun > 0)) {
         const c = this.cel, cc = p.cel, tx = cc.s ? c.tx : c.sc.x + cc.ox, ty = cc.s ? c.ty : c.sc.y + cc.oy;
         const dx = tx - p.x, dy = ty - p.y, d = Math.hypot(dx, dy);
-        if (!cc.s && c.wait && !c.sc.cel.done) { cc.at = false; }
+        if (!cc.s && ((c.wait && !c.sc.cel.done) || (c.type === 'zen' && c.age < 0.5))) { cc.at = false; }
         else {
           if (d > 7) { const s = Math.min(spd * (c.type === 'cold' && cc.s ? 0.95 : (p.role === 'G' ? 2.6 : 1.6)), d * 6); tvx = dx / d * s; tvy = dy / d * s; cc.at = false; }
           else cc.at = true;
@@ -1825,8 +1893,16 @@ Object.assign(Match.prototype, {
           }
           accel = 30;
         }
+        if (cc.s && c.type === 'zen') { // sprint for the corner, then sit cross-legged and meditate until the team arrives
+          if (!cc.fs && d < 12) { cc.fs = cc.slid = true; }
+          if (cc.fs) {
+            cc.kt += dt; tvx = tvy = 0; p.vx *= 0.5; p.vy *= 0.5;
+            if (!cc.done) { const n = this.players.filter(q => q.side === p.side && q !== p && q.cel && q.cel.at).length; if (cc.kt > 2.8) cc.done = true; }
+            cc.at = !!cc.done;
+          }
+        }
         if (cc.s && c.type === 'point') { cc.kt += dt; if (cc.at && cc.kt > 2.4) cc.done = true; }
-        if (cc.s && cc.at && c.type !== 'flip' && c.type !== 'shirt' && c.type !== 'point') {
+        if (cc.s && cc.at && c.type !== 'flip' && c.type !== 'shirt' && c.type !== 'point' && c.type !== 'zen') {
           cc.kt += dt;
           if (c.type === 'kick') { p.fx = c.fl[0] < 600 ? -1 : 1; p.fy = 0; if (cc.kt > 0.5 && !c.hit) { c.hit = { t: 0 }; this.sfx.push('post'); } if (cc.kt > 1.25) cc.done = true; }
           else if (c.type === 'cold' && cc.kt > 1.0) cc.done = true;
@@ -1835,7 +1911,7 @@ Object.assign(Match.prototype, {
           if (!cc.fs && d < 130 && d > 20) { cc.fs = cc.slid = true; cc.vx = tvx; cc.vy = tvy; }
           if (cc.fs) { cc.kt += dt; const f = Math.max(0, 1 - cc.kt / 0.85); tvx = cc.vx * f; tvy = cc.vy * f; if (cc.kt > 2.2) cc.done = true; }
         }
-        accel = cc.s && c.type === 'knee' && cc.fs ? 30 : 10;
+        accel = cc.s && (c.type === 'knee' || c.type === 'zen') && cc.fs ? 30 : 10;
       } else if (celebrate && this.noCel && p.side === this.noCel && p.role !== 'G' && !(p.stun > 0)) {
         const a = p.slot * 0.9 + (p.side === 'home' ? 0 : Math.PI), tx = 600 + Math.cos(a) * 60, ty = P.CY + Math.sin(a) * 60;
         const dx = tx - p.x, dy = ty - p.y, d = Math.hypot(dx, dy);
@@ -1939,6 +2015,11 @@ Object.assign(Match.prototype, {
     this.state = 'sub'; this.flash = { t: 2.4, text: 'SUBSTITUTION' };
     this.off.f4.fx = q.side === 'home' ? -1 : 1;
   },
+  instantSub(q) {
+    const p = this.players.find(x => x.side === q.side && x.slot === q.slot), k = this.bench[q.side].indexOf(q.inInfo);
+    if (!p || k < 0) return;
+    this.bench[q.side][k] = p.info; this.subbedOff[q.side].push(p.info); this.subs[q.side]++; p.info = q.inInfo;
+  },
   stepSub(dt) {
     const a = this.subAnim; if (!a) { this.state = 'play'; return; }
     const p = a.p; a.t += dt;
@@ -1971,7 +2052,7 @@ Object.assign(Match.prototype, {
     if (a.hadBall) { b.owner = p; b.last = p; b.x = p.x + p.fx * 15; b.y = p.y; }
     this.subAnim = null;
     if (this.subQ.length) { this.beginSub(a.prev); return; }
-    this.state = a.prev.state; this.timer = a.prev.timer;
+    this.kickSubs = false; this.state = a.prev.state; this.timer = a.prev.timer;
   },
   stepOfficials(dt) {
     const P = PITCH, b = this.ball, O = this.off;
@@ -2064,7 +2145,7 @@ Object.assign(Match.prototype, {
     this.noCel = this.score[side] < this.score[other] ? side : null;
     if (scorer && scorer.side === side && scorer.role !== 'G' && this.score[side] >= this.score[other]) {
       const P = PITCH, nm = scorer.info.name, tm = scorer.info.team;
-      const custom = tm === 'cry' && nm === 'Mateta' ? 'kick' : (tm === 'cry' && nm.includes('Wharton')) ? 'flip' : (tm === 'che' && (nm === 'Palmer' || nm === 'Rogers')) ? 'cold' : (tm === 'liv' && nm === 'Isak') ? 'point' : null;
+      const custom = tm === 'cry' && nm === 'Mateta' ? 'kick' : (tm === 'cry' && nm.includes('Wharton')) ? 'flip' : (tm === 'che' && (nm === 'Palmer' || nm === 'Rogers')) ? 'cold' : (tm === 'liv' && nm === 'Isak') ? 'point' : (tm === 'mci' && nm === 'Haaland') ? 'zen' : (tm === 'mci' && nm === 'Cherki') ? 'stand' : (tm === 'ars' && nm === 'Gyokeres') ? 'mask2' : null;
       const types = ['slide', 'plane', 'fist', 'crowd', 'hug', 'manager', 'dance', 'flip', 'sky', 'wide', 'mask', 'knee'];
       // a go-ahead goal in the 85th minute or later: shirt off, the whole squad piles on
       const late = this.half === 2 && minute >= 85 && this.score[side] - this.score[other] === 1;
@@ -2076,6 +2157,8 @@ Object.assign(Match.prototype, {
       else if (type === 'kick') { tx = cx + ix * 26; ty = cy + iy * 8; }
       else if (type === 'flip') { tx = cx + ix * 34; ty = cy + iy * 30; }
       else if (type === 'shirt') { tx = cx + ix * 36; ty = cy - 12; this.timer = 8.2; }
+      else if (type === 'stand') { tx = cx + ix * 22; ty = scorer.y < P.CY ? (P.T + P.CY - P.GH) / 2 : (P.B + P.CY + P.GH) / 2; }
+      else if (type === 'zen') { tx = cx + ix * 34; ty = cy + iy * 4; this.timer = 7; }
       this.cel = { type, sc: scorer, tx, ty, cy: iy, age: 0, fl: [cx, cy], ix, wait: false };
       scorer.cel = { s: true, at: false, slid: false, kt: 0, done: false };
       const mates = this.players.filter(q => q.side === side && q !== scorer && (q.role !== 'G' || type === 'shirt'));
@@ -2728,8 +2811,14 @@ function drawActors(g, m, t, rep) {
         if (kt >= 0.25 && kt < 1.6) { arms = 7; o.face = -1.6; o.pt = -(Math.sign(p.fx) || 1); o.pj = Math.max(0, Math.sin((kt - 0.25) * Math.PI * 2 / 0.675)); }
         else if (kt >= 1.6 && cc.at) { arms = 1; jump = Math.abs(Math.sin(t * 7)) * 10; }
       }
+      else if (ty === 'stand' && cc.s) { arms = 0; } // Cherki: runs to the byline and just stands there while the team swarms him
+      else if (ty === 'zen' && cc.s) {
+        if (cc.fs && !cc.done) { if ((cc.kt || 0) > 0.3) { o.sit = 1; o.shut = 1; arms = 10; o.face = 0; } else arms = 0; }
+        else if (cc.done) { arms = 2; jump = Math.abs(Math.sin(t * 8)) * 12; }
+      }
       else if (ty === 'sky' && cc.s) { if (cc.at) { arms = 8; jump = Math.abs(Math.sin(t * 6)) * 8; } }
       else if (ty === 'wide' && cc.s) { arms = 3; if (cc.at) jump = Math.abs(Math.sin(t * 6)) * 7; }
+      else if (ty === 'mask2' && cc.s) { arms = 11; if (cc.at) jump = Math.abs(Math.sin(t * 5)) * 5; }
       else if (ty === 'mask' && cc.s) { arms = 9; if (cc.at) jump = Math.abs(Math.sin(t * 5)) * 5; }
       else if (ty === 'knee' && cc.s) { if (cc.fs || cc.slid) { o.kneel = 1; arms = 3; tilt = -(Math.sign(p.fx) || 1) * 0.2; } else arms = 1; }
       else if (ty === 'cold' && cc.s) { arms = 6; shake = Math.sin(t * 50) * 1.3; }
@@ -2987,10 +3076,10 @@ function pauseOverlay(ht, panel) {
     const gone = m.subbedOff.home.includes(inf), queued = gone || pend.some(q => q.inInfo === inf), ok = S.out === null || m.subCompat(S.out, inf);
     return '<button class="sbtn' + (S.inn === k ? ' sel' : '') + (queued ? ' pend' : '') + '" data-act="pickin" data-v="' + k + '"' + (queued || !ok ? ' disabled' : '') + '><b>' + inf.num + '</b> ' + esc(inf.name) + ' <i>' + (gone ? 'subbed off' : inf.pos + ' ' + inf.ovr) + '</i></button>';
   }).join('');
-  const pe = pend.map((q, i) => '<div class="pendrow">' + esc(m.players.find(p => p.side === 'home' && p.slot === q.slot).info.name) + ' &rarr; ' + esc(q.inInfo.name) + ' <button class="x" data-act="cancelsub" data-v="' + m.subQ.indexOf(q) + '">&times;</button></div>').join('');
+  const pe = pend.map((q, i) => '<div class="pendrow">' + esc(m.players.find(p => p.side === 'home' && p.slot === q.slot).info.name) + ' &rarr; ' + esc(q.inInfo.name) + ' <button class="x" data-act="cancelsub" data-v="' + m.subQ.indexOf(q) + '">CANCEL</button></div>').join('');
   const can = left > 0 && S.out !== null && S.inn !== null && m.subCompat(S.out, m.bench.home[S.inn]);
   setOverlay('<div class="card subcard">' + (ht ? '' : '<h2>Paused</h2>') +
-    '<p class="hint">Substitutions left: <b>' + left + '</b> of 3. Pick a player to take off and one from the bench.</p>' +
+    '<p class="hint">Substitutions left: <b>' + left + '</b> of 3. Pick a player to take off and one from the bench.' + (ht ? ' Changes are made for the second half.' : ' A queued sub comes on when a goalkeeper has the ball.') + '</p>' +
     '<div class="subcols"><div><div class="mute">ON THE PITCH</div>' + pl + '</div><div><div class="mute">BENCH</div>' + bn + '</div></div>' +
     (pe ? '<div class="pends">' + pe + '</div>' : '') +
     '<div class="row"><button class="btn" data-act="domsub"' + (can ? '' : ' disabled') + '>Make substitution</button></div>' +
@@ -3135,12 +3224,12 @@ function applyOff(m, s) { const O = m.off; [O.l1.x, O.l1.step, O.l1.fx] = s.l1; 
 function recFrame(m) {
   const B = App.buf; if (m.state !== 'play' && m.state !== 'goal') { if (B.length) B.length = 0; return; }
   App.recN = (App.recN || 0) + 1;
-  B.push({ p: m.players.map(p => [p.x, p.y, p.fx, p.step, p.slide, p.sdx || 0, p.sdy || 0, p.diveT || 0, p.diveDir || 0, p.diveDist || 0, p.cel ? [p.cel.s ? 1 : 0, p.cel.at ? 1 : 0, p.cel.kt || 0, p.cel.slid ? 1 : 0, p.cel.ox || 0, p.cel.oy || 0] : 0, p.headJ || 0]), b: [m.ball.x, m.ball.y, m.ball.z || 0], o: snapOff(m),
+  B.push({ p: m.players.map(p => [p.x, p.y, p.fx, p.step, p.slide, p.sdx || 0, p.sdy || 0, p.diveT || 0, p.diveDir || 0, p.diveDist || 0, p.cel ? [p.cel.s ? 1 : 0, p.cel.at ? 1 : 0, p.cel.kt || 0, p.cel.slid ? 1 : 0, p.cel.ox || 0, p.cel.oy || 0, p.cel.fs ? 1 : 0, p.cel.done ? 1 : 0] : 0, p.headJ || 0]), b: [m.ball.x, m.ball.y, m.ball.z || 0], o: snapOff(m),
     c: m.state === 'goal' && m.cel ? [m.cel.type, m.players.indexOf(m.cel.sc), m.cel.tx, m.cel.ty, m.cel.age, m.cel.hit ? m.cel.hit.t : -1, m.cel.fl[0], m.cel.fl[1], m.cel.ix, m.noCel || null] : null, g: m.state === 'goal' ? 1 : 0 });
   if (B.length > 340) B.shift();
 }
 function startReplay(m) {
-  const B = App.buf, after = App.recN - (App.goalN || App.recN), gi = B.length - after, start = Math.max(0, gi - 56), end = Math.min(B.length, gi + (m.cel ? (m.cel.type === 'flip' ? 135 : m.cel.type === 'shirt' ? 225 : 112) : 70));
+  const B = App.buf, after = App.recN - (App.goalN || App.recN), gi = B.length - after, start = Math.max(0, gi - 56), end = Math.min(B.length, gi + (m.cel ? ({ flip: 135, shirt: 225, zen: 230, point: 135, knee: 125 }[m.cel.type] || 112) : 70));
   if (end - start < 30 || gi - start < 20) { App.repDone = m.events.length; return; }
   const fr = B.slice(start, end), g0 = gi - start, d1 = g0 / 30 / 0.6, d2 = (fr.length - 1 - g0) / 30 / 1.0;
   const cf = fr.find(f => f.c);
@@ -3155,7 +3244,7 @@ function drawReplay(g, m, R, t) {
   const sv = { st: m.state, cel: m.cel, flash: m.flash, nc: m.noCel, rc: m.repCel, pc: m.players.map(p => p.cel) };
   if (A.c) { m.state = 'goal'; m.cel = { type: A.c[0], sc: m.players[A.c[1]], tx: A.c[2], ty: A.c[3], age: A.c[4], hit: A.c[5] >= 0 ? { t: A.c[5] } : null, fl: [A.c[6], A.c[7]], ix: A.c[8] }; m.noCel = A.c[9]; m.flash = { t: 1, side: R.side }; m.repCel = true; } else m.repCel = false;
   const save = m.players.map(p => [p.x, p.y, p.fx, p.step, p.slide, p.sdx, p.sdy, p.diveT, p.diveDir, p.diveDist]), sb = [m.ball.x, m.ball.y, m.ball.z];
-  m.players.forEach((p, n) => { const a = A.p[n], b = Bn.p[n]; p.x = L(a[0], b[0]); p.y = L(a[1], b[1]); p.fx = a[2]; p.step = a[3]; p.slide = a[4]; p.sdx = a[5]; p.sdy = a[6]; p.diveT = a[7]; p.diveDir = a[8]; p.diveDist = a[9]; p.headJ = a[11] || 0; const c = a[10]; p.cel = c ? { s: !!c[0], at: !!c[1], kt: c[2], slid: !!c[3], ox: c[4], oy: c[5] } : null; });
+  m.players.forEach((p, n) => { const a = A.p[n], b = Bn.p[n]; p.x = L(a[0], b[0]); p.y = L(a[1], b[1]); p.fx = a[2]; p.step = a[3]; p.slide = a[4]; p.sdx = a[5]; p.sdy = a[6]; p.diveT = a[7]; p.diveDir = a[8]; p.diveDist = a[9]; p.headJ = a[11] || 0; const c = a[10]; p.cel = c ? { s: !!c[0], at: !!c[1], kt: c[2], slid: !!c[3], ox: c[4], oy: c[5], fs: !!c[6], done: !!c[7] } : null; });
   m.ball.x = L(A.b[0], Bn.b[0]); m.ball.y = L(A.b[1], Bn.b[1]); m.ball.z = L(A.b[2], Bn.b[2]);
   // camera: follows the ball, pushes in on the goal for the finish
   const gx = R.frames[R.gi].b[0] > 600 ? PITCH.R : PITCH.L;
