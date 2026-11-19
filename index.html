@@ -150,6 +150,16 @@ select{background:var(--panel2);color:var(--fg);border:2px solid var(--line);bor
 }
 @media (prefers-reduced-motion:reduce){.btn{transition:none}}
 #b-quit[hidden]{display:none}
+#touch{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:space-between;align-items:flex-end;padding:0 max(18px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));pointer-events:none;user-select:none;-webkit-user-select:none;touch-action:none}
+#touch[hidden]{display:none}
+#joy{position:relative;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.10);border:2px solid rgba(255,255,255,.35);pointer-events:auto;touch-action:none}
+#knob{position:absolute;left:50%;top:50%;width:62px;height:62px;margin:-31px 0 0 -31px;border-radius:50%;background:rgba(255,255,255,.4);border:2px solid rgba(255,255,255,.7)}
+#tbtns{position:relative;width:220px;height:220px;pointer-events:none}
+.tb{position:absolute;width:72px;height:72px;border-radius:50%;border:2px solid rgba(255,255,255,.55);background:rgba(20,30,60,.55);color:#fff;font:700 11px/1.1 var(--body);text-transform:uppercase;letter-spacing:.03em;padding:4px;pointer-events:auto;touch-action:none;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+.tb.on{background:rgba(255,255,255,.55);color:#0b1330}
+#tb-t{left:74px;top:0}#tb-l{left:0;top:74px}#tb-r{right:0;top:74px}#tb-b{left:74px;bottom:0}
+body.touch #legend{display:none}
+@media (orientation:portrait){#touch{padding-bottom:max(24px,env(safe-area-inset-bottom))}}
 </style>
 <button class="btn ghost fixed" id="b-mute">♪ Music on</button>
 <section class="screen" id="s-title">
@@ -220,6 +230,15 @@ select{background:var(--panel2);color:var(--fg);border:2px solid var(--line);bor
     <canvas id="cv" width="1200" height="720" tabindex="0"></canvas>
     <div id="overlay" hidden></div>
     <button class="btn ghost" id="b-quit">Pause</button>
+  </div>
+  <div id="touch" hidden>
+    <div id="joy"><div id="knob"></div></div>
+    <div id="tbtns">
+      <button class="tb" id="tb-t" data-k="KeyI"></button>
+      <button class="tb" id="tb-l" data-k="KeyJ"></button>
+      <button class="tb" id="tb-r" data-k="KeyL"></button>
+      <button class="tb" id="tb-b" data-k="KeyK"></button>
+    </div>
   </div>
   <div id="legend">
     <span><kbd>WASD</kbd> move</span><span><kbd>K</kbd> pass</span><span><kbd>L</kbd> shoot / slide</span><span><kbd>I</kbd> through</span><span><kbd>J</kbd> cross / stand tackle</span><span><kbd>Space</kbd> switch</span><span><kbd>P</kbd> pause</span><span><kbd>M</kbd> sound</span>
@@ -3287,7 +3306,7 @@ function drawReplay(g, m, R, t) {
 
 function frame(now) {
   App.raf = requestAnimationFrame(frame);
-  if (App.match && !$('s-match').hidden) { AudioDir.update(App.match); const q = $('b-quit'), hq = App.match.state === 'fulltime'; if (q.hidden !== hq) q.hidden = hq; }
+  if (App.match && !$('s-match').hidden) { AudioDir.update(App.match); updateTouch(); const q = $('b-quit'), hq = App.match.state === 'fulltime'; if (q.hidden !== hq) q.hidden = hq; }
   const dt = Math.min(0.05, (now - App.last) / 1000); App.last = now; App.t += dt;
   if (!$('s-title').hidden) drawHero(App.t);
   const m = App.match;
@@ -3343,6 +3362,46 @@ window.addEventListener('keydown', e => {
 });
 window.addEventListener('keyup', e => { if (App.match && GAMEKEYS[e.code]) App.match.keys[e.code] = false; });
 window.addEventListener('blur', () => { if (App.match) App.match.keys = {}; });
+
+/* ---- touch controls (phones / tablets): joystick + 4 buttons, same actions as the keyboard ---- */
+const IS_TOUCH = (window.matchMedia && matchMedia('(pointer:coarse)').matches) || 'ontouchstart' in window;
+if (IS_TOUCH) document.body.classList.add('touch');
+const TLAB = { off: { KeyI: 'Through', KeyJ: 'Cross', KeyL: 'Shoot', KeyK: 'Pass' }, def: { KeyI: '', KeyJ: 'Stand tackle', KeyL: 'Slide tackle', KeyK: 'Switch players' } };
+function updateTouch() {
+  const t = $('touch'), m = App.match;
+  const show = IS_TOUCH && !!m && !$('s-match').hidden && !App.paused && !App.rep && !App.intro && m.state !== 'fulltime' && m.state !== 'halftime';
+  if (t.hidden === show) t.hidden = !show;
+  if (!show) return;
+  const mode = m.ball.owner && m.ball.owner.side === m.human ? 'off' : 'def';
+  if (t.dataset.mode !== mode) { t.dataset.mode = mode; document.querySelectorAll('.tb').forEach(b => { b.textContent = TLAB[mode][b.dataset.k]; b.style.display = b.textContent ? '' : 'none'; }); }
+}
+(function () {
+  if (!IS_TOUCH) return;
+  const setKey = (code, on) => { const m = App.match; if (!m) return; m.keys[code] = on; if (on && !App.paused) m.pressed[code] = true; };
+  document.querySelectorAll('.tb').forEach(b => {
+    const k = b.dataset.k;
+    b.addEventListener('pointerdown', e => { e.preventDefault(); Snd.init(); b.setPointerCapture(e.pointerId); b.classList.add('on'); setKey(k, true); });
+    const up = e => { b.classList.remove('on'); if (App.match) App.match.keys[k] = false; };
+    b.addEventListener('pointerup', up); b.addEventListener('pointercancel', up); b.addEventListener('lostpointercapture', up);
+    b.addEventListener('contextmenu', e => e.preventDefault());
+  });
+  const joy = $('joy'), knob = $('knob'); let jid = null;
+  const dirs = { KeyW: 0, KeyA: 0, KeyS: 0, KeyD: 0 };
+  const apply = (dx, dy) => {
+    const r = joy.getBoundingClientRect().width / 2, d = Math.hypot(dx, dy) || 1, c = Math.min(d, r * 0.62);
+    knob.style.transform = `translate(${dx / d * c}px,${dy / d * c}px)`;
+    const th = r * 0.22, on = d > th;
+    const n = { KeyD: on && dx > th * 0.9 * (Math.abs(dy) > Math.abs(dx) * 1.7 ? 99 : 1), KeyA: on && -dx > th * 0.9 * (Math.abs(dy) > Math.abs(dx) * 1.7 ? 99 : 1), KeyS: on && dy > th * 0.9 * (Math.abs(dx) > Math.abs(dy) * 1.7 ? 99 : 1), KeyW: on && -dy > th * 0.9 * (Math.abs(dx) > Math.abs(dy) * 1.7 ? 99 : 1) };
+    for (const k in n) if (!!dirs[k] !== n[k]) { dirs[k] = n[k]; if (App.match) App.match.keys[k] = n[k]; }
+  };
+  const rel = e => { const b = joy.getBoundingClientRect(); return [e.clientX - (b.left + b.width / 2), e.clientY - (b.top + b.height / 2)]; };
+  joy.addEventListener('pointerdown', e => { e.preventDefault(); Snd.init(); jid = e.pointerId; joy.setPointerCapture(jid); apply(...rel(e)); });
+  joy.addEventListener('pointermove', e => { if (e.pointerId === jid) apply(...rel(e)); });
+  const end = e => { if (e.pointerId !== jid) return; jid = null; knob.style.transform = ''; for (const k in dirs) { dirs[k] = 0; if (App.match) App.match.keys[k] = false; } };
+  joy.addEventListener('pointerup', end); joy.addEventListener('pointercancel', end); joy.addEventListener('lostpointercapture', end);
+  // tap the pitch to skip the intro / a replay
+  $('cv').addEventListener('pointerdown', () => { if (App.rep) endReplay(App.match); else if (App.intro) endIntro(); });
+})();
 
 /* ---- wiring ---- */
 $('b-play').onclick = () => { Snd.init(); show('s-teams'); };
