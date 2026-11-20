@@ -3684,13 +3684,14 @@ function mpPres(mp, patch) { try { const r = mp.rm.presence(patch); if (r && r.c
 /* Outside Claude (e.g. the game hosted on GitHub Pages) there is no `room`, so the same presence
    interface is provided over WebRTC with PeerJS: the host registers the id 'pf-CODE' on PeerJS's free
    public broker, the guest connects to it, and the two then talk directly. */
+function mpPeerCtor() { return window.Peer || (window.peerjs && window.peerjs.Peer) || null; }
 function mpLoadPeerJS() {
-  if (window.Peer) return Promise.resolve();
+  if (mpPeerCtor()) return Promise.resolve();
   const urls = ['https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js', 'https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js'];
   const tryOne = i => new Promise((ok, no) => {
-    if (window.Peer) return ok();
+    if (mpPeerCtor()) return ok();
     if (i >= urls.length) return no(new Error('nopeerjs'));
-    const sc = document.createElement('script'); sc.src = urls[i]; sc.onload = () => window.Peer ? ok() : no(new Error('nopeerjs')); sc.onerror = () => tryOne(i + 1).then(ok, no);
+    const sc = document.createElement('script'); sc.src = urls[i]; sc.onload = () => mpPeerCtor() ? ok() : tryOne(i + 1).then(ok, no); sc.onerror = () => tryOne(i + 1).then(ok, () => no(new Error('noroom: could not load the PeerJS library (offline or blocked?)')));
     document.head.appendChild(sc);
   });
   return tryOne(0);
@@ -3705,7 +3706,7 @@ function mpPeerRoom(role, code) {
       c.on('open', () => { out = Object.assign({}, me); flush(); });
       c.on('data', d => { if (d && d.p) { other = Object.assign({}, other || {}); for (const k in d.p) { if (d.p[k] === null) delete other[k]; else other[k] = d.p[k]; } fire(); } });
       c.on('close', () => { if (conn === c) { conn = null; other = null; fire(); } });
-      c.on('error', () => { });
+      c.on('error', e => { if (room.err) room.err('connection ' + (e && e.type || 'error')); });
     };
     const room = {
       presence(patch) { for (const k in patch) { if (patch[k] === null) { delete me[k]; out[k] = null; } else { me[k] = patch[k]; out[k] = patch[k]; } } if (!tm) tm = setTimeout(flush, 33); return Promise.resolve(); },
@@ -3715,14 +3716,15 @@ function mpPeerRoom(role, code) {
     };
     const fail = e => { if (!done) { done = true; reject(e); } };
     const cfg = { debug: 0 };
-    peer = role === 'host' ? new Peer('pf-' + code.toLowerCase(), cfg) : new Peer(cfg);
-    peer.on('error', e => { if (!done) { try { peer.destroy(); } catch (x) { } return fail(new Error(e && e.type === 'unavailable-id' ? 'taken' : e && e.type === 'peer-unavailable' ? 'nogame' : 'noroom')); } });
+    const PC = mpPeerCtor();
+    peer = role === 'host' ? new PC('pf-' + code.toLowerCase(), cfg) : new PC(cfg);
+    peer.on('error', e => { if (done) { if (room.err) room.err(e && e.type || 'error'); return; } if (!done) { try { peer.destroy(); } catch (x) { } return fail(new Error(e && e.type === 'unavailable-id' ? 'taken' : e && e.type === 'peer-unavailable' ? 'nogame' : 'noroom: ' + (e && e.type || e))); } });
     peer.on('open', () => {
       if (role === 'host') { peer.on('connection', c => { if (conn && conn.open) { try { c.close(); } catch (e) { } return; } wire(c); }); done = true; resolve(room); }
-      else { done = true; wire(peer.connect('pf-' + code.toLowerCase(), { reliable: true })); resolve(room); }
+      else { done = true; wire(peer.connect('pf-' + code.toLowerCase(), { reliable: true, serialization: 'json' })); resolve(room); }
     });
     peer.on('disconnected', () => { try { peer.reconnect(); } catch (e) { } });
-    setTimeout(() => fail(new Error('noroom')), 12000);
+    setTimeout(() => fail(new Error('noroom: timeout contacting the PeerJS server')), 15000);
   }));
 }
 async function mpOpen(role, code) {
@@ -3795,7 +3797,8 @@ const MP = {
       const c = t ? mpCode() : code; $('f-code').textContent = c;
       try { await mpOpen('host', c); ok = true; } catch (e) { err = e; if (!(e && e.message === 'taken')) break; }
     }
-    if (!ok) { $('f-hs').textContent = 'Could not open a game. Check your internet connection and try again.'; return; }
+    if (!ok) { $('f-hs').textContent = 'Could not open a game (' + String(err && err.message || err).replace(/^noroom: ?/, '') + '). Check your internet connection and try again.'; return; }
+    App.mp.rm.err = t => { if (App.mp && !App.mp.connected) $('f-hs').textContent = 'Connection problem: ' + t + '. Waiting for your friend...'; };
     $('f-hs').textContent = 'Waiting for your friend to join...';
     App.mp.onConn = 1; MP.onConnect = () => MP.enterSetup();
   },
@@ -3803,9 +3806,10 @@ const MP = {
     code = (code || '').toUpperCase().replace(/[^A-Z]/g, '');
     if (code.length !== 4) { $('f-js').textContent = 'Codes are 4 letters.'; return; }
     $('f-js').textContent = 'Looking for the game...';
-    try { await mpOpen('guest', code); } catch (e) { $('f-js').textContent = e && e.message === 'nogame' ? 'No game found with that code. Check it and try again.' : 'Could not connect. Check your internet connection and try again.'; return; }
+    try { await mpOpen('guest', code); } catch (e) { $('f-js').textContent = e && e.message === 'nogame' ? 'No game found with that code. Check it and try again.' : 'Could not connect (' + String(e && e.message || e).replace(/^noroom: ?/, '') + '). Check your internet connection and try again.'; return; }
+    App.mp.rm.err = t => { if (!App.mp || App.mp.connected) return; if (t === 'peer-unavailable') { $('f-js').textContent = 'No game found with that code. Check it and try again.'; mpClose(); } else $('f-js').textContent = 'Connection problem: ' + t; };
     MP.onConnect = () => MP.enterSetup();
-    setTimeout(() => { const mp = App.mp; if (mp && mp.role === 'guest' && !mp.connected) { $('f-js').textContent = 'No game found with that code. Check it and try again.'; mpClose(); } }, 9000);
+    setTimeout(() => { const mp = App.mp; if (mp && mp.role === 'guest' && !mp.connected) { $('f-js').textContent = 'No game found with that code. Check it and try again.'; mpClose(); } }, 25000);
   },
   enterSetup() {
     MP.onConnect = null;
